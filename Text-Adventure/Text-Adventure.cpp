@@ -5,79 +5,73 @@
 
 using namespace std;
 
-void displayAbilities();
-void encounterChallenge(int abilityChoice);
 
 int main()
 {
-   
-	int abilityChoice;
 
-	//introduction
-	cout << "Welcome, brave hero! Your quest is to overcome challenges by choosing the right abilities" << endl;
-	cout << "You will be presented with a series of challenges. Choose your abilities wisely!" << endl;
+	string playerName;
 
-	//display the abilities menu
-	displayAbilities();
+	cout << "Welcome to the Wizard's Adventure!" << endl;
+	cout << "What is your name, young wizard?" << endl;
+	getline(cin, playerName);
 
-	cout << "Enter the number of the ability you choose (1-3): ";
-	cin >> abilityChoice;
+	cout << "Hello, " << playerName << "! Let's begin your adventure." << endl;
 
-	while (abilityChoice < 1 || abilityChoice > 3) {
-		cout << "Invalid choice. Please choose a number between 1 and 6: ";
-		cin >> abilityChoice;
+	cout << "Choose your study of magic:" << endl;
+	cout << "1. Fire" << endl;
+	cout << "2. Ice" << endl;
+	cout << "3. Life" << endl;
+	cout << "4. Death" << endl;
+	cout << "5. Storm" << endl;
+	cout << "6. Illusion" << endl;
 
-	}
-	encounterChallenge(abilityChoice);
+	int schoolChoice;
+	cin >> schoolChoice;
 
-	return 0;
-
-}
-void displayAbilities() {
-	cout << "\nAvailiable Abilities:" << endl;
-	cout << "1. Strength - Overcome physical obstacles. " << endl;
-	cout << "2. Intelligence - Solve complex problems." << endl;
-	cout << "3. Agility - Evade traps and hazards." << endl;
-	cout << "4. Charisma - Persuade others and gain abilites." << endl;
-	cout << "5. Stealth - sneak past enemies unnoticed." << endl;
-	cout << "6. Magic - Use spells to alter reality." << endl;
-}
-
-void encounterChallenge(int abilityChoice) {
-	switch (abilityChoice) {
+	string school;
+	switch (schoolChoice) {
 		case 1:
-			cout << "\nYou chose Strength!" << endl;
-			cout << "You face a giant boulder blocking your path" << endl;
-			cout << "With your immense strength, you push the boulder aside and continue on your way." << endl;
+			school = "Fire";
+			cout << "Choose your faction within the School of Fire:" << endl;
+			cout << "1. Inferno Knights" << endl;
+			cout << "2. Pyro Scholars" << endl;
+			cout << "3. Flameborn Order" << endl;
 			break;
 		case 2:
-			cout << "You chose Intelligence!" << endl;
-			cout << "You encounter a locked door with a complex puzzle." << endl;
-			cout << "Using your sharp mind, you solve the puzzle amd the door opens, allowing you to proceed." << endl;
+			school = "Ice";
+			cout << "Choose your faction within the School of Ice:" << endl;
+			cout << "1. Frost Guard" << endl;
+			cout << "2. Ice Scholars" << endl;
+			cout << "3. Glacial Sentinels" << endl;
 			break;
 		case 3:
-			cout << "\nYou chose Agility!" << endl;
-			cout << "You come across a series of dangerous traps on the ground." << endl;
-			cout << "With your quick reflexes, you dodge and leap over the traps, safely making it through." << endl;
+			school = "Life";
+			cout << "Choose your faction within the School of Life" << endl;
+			cout << "1. Sylvan Scholars" << endl;
+			cout << "2. Verdant Circle" << endl;
+			cout << "3. Eternal Bloom Council" << endl;
 			break;
 		case 4:
-			cout << "\nYou chose Charisma!" << endl;
-			cout << "You encounter a group of bandits blocking your path." << endl;
-			cout << "With your charm and persuasive skills, you convince them to let you pass without a fight." << endl;
+			school = "Death";
+			cout << "Choose your faction within the School of Death" << endl;
+			cout << "1. Necrotic Enclave" << endl;
+			cout << "2. Shadowveil Syndicate" << endl;
+			cout << "3. Gravebound Cult" << endl;
 			break;
 		case 5:
-			cout << "\nYou chose Stealth!" << endl;
-			cout << "You need to infiltrate an enemy camp to retreive a stolen item." << endl;
-			cout << "By using your stealth abilites, you sneak past the guards and retreive the item without being detected." << endl;
+			school = "Storm";
+			cout << "Choose your faction within the School of Storm" << endl;
+			cout << "1. Stormcaller Brotherhood" << endl;
+			cout << "2. Thunderstrike Circle" << endl;
+			cout << "3. Electroflare Consortium" << endl;
 			break;
 		case 6:
-			cout << "\You chose Magic" << endl;
-			cout << "You are faced with a fiery chasm that is too wide to cross." << endl;
-			cout << "Using your magical powers, you cast a spell to create a bridge over the chasm, allowing you to cross safely." << endl;
-			break;
-		default:
-			cout << "An error occurred. Please restart the game." << endl;
-			break;
+			school = "Illusion";
+			cout << "Choose your faction within the School of Illusion" << endl;
+			cout << "1. Veilweaver Guild" << endl;
+			cout << "2. Mirage Conclave" << endl;
+			cout << "3. Phantomveil Assembly" << endl;
 	}
 
 }
+
