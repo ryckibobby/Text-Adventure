@@ -5,6 +5,26 @@
 
 using namespace std;
 
+//function declarations 
+void exploreFireFaction1();
+void exploreFireFaction2();
+void exploreFireFaction3();
+void exploreIceFaction1();
+void exploreIceFaction2();
+void exploreIceFaction3();
+void exploreLifeFaction1();
+void exploreLifeFaction2();
+void exploreLifeFaction3();
+void exploreDeathFaction1();
+void exploreDeathFaction2();
+void exploreDeathFaction3();
+void exploreStormFaction1();
+void exploreStormFaction2();
+void exploreStormFaction3();
+void exploreIllusionFaction1();
+void exploreIllusionFaction2();
+void exploreIllusionFaction3();
+
 
 int main()
 {
@@ -71,6 +91,107 @@ int main()
 			cout << "1. Veilweaver Guild" << endl;
 			cout << "2. Mirage Conclave" << endl;
 			cout << "3. Phantomveil Assembly" << endl;
+			break;
+		default:
+			cout << "Invalid school choice. The adventure ends here." << endl;
+			return 0;
+	}
+	
+	int factionChoice;
+	cin >> factionChoice;
+
+	if (school == "Fire") {
+		switch (factionChoice) {
+			case 1:
+				exploreFireFaction1();
+				break;
+			case 2:
+				exploreFireFaction2();
+				break;
+			case 3:
+				exploreFireFaction3();
+				break;
+			default:
+				cout << "Invalid faction choice." << endl;
+				break;
+		}
+	} else if (school == "Ice") {
+		switch (factionChoice) {
+			case 1:
+				exploreIceFaction1();
+				break;
+			case 2:
+				exploreIceFaction2();
+				break;
+			case 3:
+				exploreIceFaction3();
+				break;
+			default:
+				cout << "Invalid faction choice." << endl;
+				break;
+		}
+	} else if (school == "Life") {
+		switch (factionChoice) {
+			case 1:
+				exploreLifeFaction1();
+				break;
+			case 2:
+				exploreLifeFaction2();
+				break;
+			case 3:	
+				exploreLifeFaction3();
+				break;
+			default:
+				cout << "Invalid faction choice." << endl;
+				break;
+		}
+	} else if (school == "Death") {
+		switch (factionChoice) {
+			case 1:
+				exploreDeathFaction1();
+				break;
+			case 2:
+				exploreDeathFaction2();
+				break;
+			case 3:
+				exploreDeathFaction3();
+				break;
+			default:
+				cout << "Invalid faction choice." << endl;
+				break;
+		}
+	} else if (school == "Storm") {
+		switch (factionChoice) {
+			case 1:
+				exploreStormFaction1();
+				break;
+			case 2:
+				exploreStormFaction2();
+				break;
+			case 3:
+				exploreStormFaction3();
+				break;
+			default:
+				cout << "Invalid faction choice." << endl;
+				break;
+		}
+	} else if (school == "Illusion") {
+		switch (factionChoice) {
+			case 1:
+				exploreIllusionFaction1();
+				break;
+			case 2:
+				exploreIllusionFaction2();
+				break;
+			case 3:
+				exploreIllusionFaction3();
+				break;
+			default:
+				cout << "Invalid faction choice." << endl;
+				break;
+		}
+	} else {
+		cout << "Invalid school choice." << endl;
 	}
 
 }
