@@ -1,7 +1,6 @@
-
-
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -588,7 +587,7 @@ void exploreStormFaction3() {
 		case 3:
 			cout << "In the Electroflare Archives, you learn about the previous Electroflare Consortium." << endl;
 			break;
-		defualt:
+		default:
 			cout << "You wander around and find yourself back at the starting point." << endl;
 			break;
 	}
@@ -668,3 +667,122 @@ void exploreIllusionFaction3() {
 			break;
 	}
 }
+
+
+//function to embark on a quest
+void embarkQuest(const string& school) {
+	cout << "You have chosen to embark on a quest." << endl;
+	cout << "1. Quest for the School of Fire" << endl;
+	cout << "2. Quest for the School of Ice" << endl;
+	cout << "3. Quest for the School of Life" << endl;
+	cout << "4. Quest for the School of Storm" << endl;
+	cout << "5. Quest for the School of Death" << endl;
+	cout << "6. Quest for the School of Illusion" << endl;
+
+	int questChoice;
+	cin >> questChoice;
+
+	switch (questChoice) {
+	case 1:
+		cout << "You embark on a quest for the School of Fire." << endl;
+		//expand specific quest here
+		break;
+	case 2:
+		cout << "You embark on a quest for the School of Ice." << endl;
+		//expand specific quest here
+		break;
+	case 3:
+		cout << "You embark on a quest for the School of Life." << endl;
+		//expand specific quest here
+		break;
+	case 4:
+		cout << "You embark on a quest for the School of Storm." << endl;
+		//expand specific quest here
+		break;
+	case 5:
+		cout << "You embark on a quest for the School of Death." << endl;
+		//expand specific quest here
+		break;
+	case 6:
+		cout << "You embark on a quest for the School of Illusion." << endl;
+		//expand specific quest here
+		break;
+	default:
+		cout << "You decide to remain in the current area." << endl;
+		break;
+	}
+}
+// structure for friends
+struct Friend {
+	string name;
+	string specialty;
+};
+
+//function to learn magic
+void learnMagic(const string& school) {
+	cout << "Welcome to the " << school << "School of Magic!" << endl;
+
+	vector<string> classes;
+	if (school == "Fire") {
+		classes = { "Advanced Pyromancy", "Flame Conjuration", "Inferno Mastery" };
+	} else if (school == "Ice") {
+		classes = { "Cyromancy Basics", "Glacial Defense", "Inferno Mastery" };
+	} else if (school == "Life") {
+		classes = { "Herbal Healing", "Nature's Fury", "Restorative Magic" };
+	} else if (school == "Death") {
+		classes = { "Necromantic Rituals", "Soul Binding", "Dark Resurrection" };
+	} else if (school == "Storm") {
+		classes = { "Lightning Manipulation", "Thunder Calling", "Storm Summoning" };
+	} else if (school == "Illusion") {
+		classes = { "Mirage Crafting", "Mind Manipulation", "Phantom Projection" };
+	}
+	cout << "Choose a class to study:" << endl;
+	for (int i = 0; i < classes.size(); ++i) {
+		cout << i + 1 << ". " << classes[i] << endl;
+	}
+
+	int classChoice;
+	cin >> classChoice;
+
+	if (classChoice < 1 || classChoice > classes.size()) {
+		cout << "Invalid class choice." << endl;
+		return;
+	}
+
+	string chosenClass = classes[classChoice - 1];
+	cout << "You have chosen to study " << chosenClass << "." << endl;
+
+	//making friends process
+	vector<Friend> potentialFriends;
+	if (school == "Fire") {
+		potentialFriends = { {"Blaze, Pyromancer"}, {"Ember", "Fire Dancer"}, {"Flare", "Inferno Specialist"}};
+	} else if (school == "Ice") {
+		potentialFriends = { {"Frost", "Cyromancer"}, {"Glaze","Ice Sculptor"},{"Chill","Blizzard Conjurer"}};
+	} else if (school == "Life") {
+		potentialFriends = { {"Willow","Herbalist"},{"Fern","Healer"},{"Briar","Nature Protector"} };
+	} else if (school == "Death") {
+		potentialFriends = { {"Shade","Necromancer"},{"Gloom","Soul Binder"},{"Relevant","Dark Alchemist"} };
+	} else if (school == "Storm") {
+		potentialFriends = { {"Bolt","Stormcaller"},{"Zephyr","Wind Rider"},{"Tempest","Lightning Conduction"} };
+	} else if (school == "Illusion") {
+		potentialFriends = { {"Shade","Illusionist"},{"Glimer","Mind Bender"},{"Mirage","Phantom Weaver"}};
+	}
+
+	cout << "During your studies, you met some fellow wizards. Who would you like to befriend?" << endl;
+	for (int i = 0; i < potentialFriends.size(); ++i) {
+		cout << i + 1 << ". " << potentialFriends[i].name << " - " << potentialFriends[i].specialty << endl;
+	}
+
+	int friendChoice;
+	cin >> friendChoice;
+
+	if (friendChoice < 1 || friendChoice > potentialFriends.size()) {
+		cout << "You couldn't decide who to befriend, so you continue your studies alone." << endl;
+	} else {
+		Friend newFriend = potentialFriends[friendChoice - 1];
+		cout << "You have befriended " << newFriend.name << "who specializes in " << newFriend.specialty << "." << endl;
+		//store friend in friends list
+	}
+	cout << "You continue to learn and grow in the art of " << school << "magic." << endl;
+}
+
