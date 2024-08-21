@@ -25,7 +25,7 @@ void exploreIllusionFaction2();
 void exploreIllusionFaction3();
 
 void learnMagic(const string& school);
-void embarkQuest(const string& school);
+void embarkQuest(const string& school); 
 
 
 int main()
@@ -668,55 +668,137 @@ void exploreIllusionFaction3() {
 	}
 }
 
-
-//function to embark on a quest
-void embarkQuest(const string& school) {
-	cout << "You have chosen to embark on a quest." << endl;
-	cout << "1. Quest for the School of Fire" << endl;
-	cout << "2. Quest for the School of Ice" << endl;
-	cout << "3. Quest for the School of Life" << endl;
-	cout << "4. Quest for the School of Storm" << endl;
-	cout << "5. Quest for the School of Death" << endl;
-	cout << "6. Quest for the School of Illusion" << endl;
-
-	int questChoice;
-	cin >> questChoice;
-
-	switch (questChoice) {
-	case 1:
-		cout << "You embark on a quest for the School of Fire." << endl;
-		//expand specific quest here
-		break;
-	case 2:
-		cout << "You embark on a quest for the School of Ice." << endl;
-		//expand specific quest here
-		break;
-	case 3:
-		cout << "You embark on a quest for the School of Life." << endl;
-		//expand specific quest here
-		break;
-	case 4:
-		cout << "You embark on a quest for the School of Storm." << endl;
-		//expand specific quest here
-		break;
-	case 5:
-		cout << "You embark on a quest for the School of Death." << endl;
-		//expand specific quest here
-		break;
-	case 6:
-		cout << "You embark on a quest for the School of Illusion." << endl;
-		//expand specific quest here
-		break;
-	default:
-		cout << "You decide to remain in the current area." << endl;
-		break;
-	}
-}
-// structure for friends
 struct Friend {
 	string name;
 	string specialty;
 };
+
+//function to embark on a quest
+void embarkQuest(const string& school, const Friend& friendChosen) {
+	cout << "You and " << friendChosen.name << "are about to embark on an exciting quest!" << endl;
+
+	if (school == "Fire") {
+		cout << "1. Quest: The Burning Mountain\n"
+			<< "A dormant volcano has started to awaken, threatening the nearby villages. You must harness the power of fire to contain the eruption and save the people." << endl;
+
+		cout << "2. Quest: The Phoenix's Rebirth\n"
+			<< "A legendary phoenix has been sighted. It's your chance to gain the creature's trust and learn the secrets of eternal flame." << endl;
+	}
+	else if (school == "Ice") {
+		cout << "1. Quest: The Frozen Tundra\n"
+			<< "A once lush forest has turned into a frozen wasteland. Uncover the source of the unnatural cold and restore the balance of nature." << endl;
+
+		cout << "2. Quest: The Ice Dragon\n"
+			<< "Rumors of an ancient Ice dragon have surfaced. You must find and either subdue or ally with this powerful creature." << endl;
+	}
+	else if (school == "Life") {
+		cout << "1. Quest: The Enchanted Grove\n"
+			<< "A sacred grove is dying, its life force being drained by a mysterious dark magic. You must heal the land and uncover the culprit behind the curse." << endl;
+
+		cout << "2. Quest: The Great Forest Guardian\n"
+			<< "A gigantic creature that protects the forest that was corrupted. Purifty its spirit and restore its role as the guardian of nature." << endl;
+	}
+	else if (school == "Death") {
+		cout << "1. Quest: The Haunted Crypt\n"
+			<< "An ancient crypt is stirringwith restless spirits. Enter the crypt, communicate with the dead, and put their souls to rest." << endl;
+
+		cout << "2. Quest: The Reaper's Scythe\n"
+			<< "A powerful artifcat, the Reaper's Scythe, has been stolen. Recover it before it falls into the wrong hands and unleashes chaos on the world." << endl;
+	} 
+	else if (school == "Storm") {
+		cout << "1. Quest: The Tempest Sea\n"
+			<< "   A massive storm is brewing over the ocean, endangering countless lives. Command the storm's power to calm the seas and save the coastal towns." << endl;
+
+		cout << "2. Quest: The Thunder God's Challenge\n"
+			<< "   Prove your worth to the Thunder God by completing a series of challenges that test your control over lightning and wind." << endl;
+
+	}
+	else if (school == "Illusion") {
+		cout << "1. Quest: The Maze of Mirrors\n"
+			<< "   An ancient labyrinth of illusions has reappeared, trapping those who enter. Navigate the maze and reveal the truth hidden within the reflections." << endl;
+
+		cout << "2. Quest: The Phantom's Masquerade\n"
+			<< "   Attend a mysterious masquerade ball where nothing is as it seems. Uncover the identities of the guests and prevent a hidden plot from coming to fruition." << endl;
+	}
+
+	int questChoice;
+	cout << "Choose a quest to embark on (1 or 2): ";
+	cin >> questChoice;
+
+	if (questChoice < 1 || questChoice > 2) {
+		cout << "Invalid choice. The quest cannot proceed." << endl;
+		return;
+	}
+
+	// Output specific quest details and how the friend will help
+	if (questChoice == 1) {
+		if (school == "Fire") {
+			cout << "You and " << friendChosen.name << " travel to the Burning Mountain. "
+				<< friendChosen.name << " uses their pyromancy to guide you through the scorching heat, and together you find a way to calm the volcano." << endl;
+
+		}
+		else if (school == "Ice") {
+			cout << "You and " << friendChosen.name << " journey to the Frozen Tundra. "
+				<< friendChosen.name << "'s mastery of ice helps you withstand the extreme cold as you work together to restore the forest's natural climate." << endl;
+
+		}
+		else if (school == "Life") {
+			cout << "You and " << friendChosen.name << " venture into the Enchanted Grove. "
+				<< friendChosen.name << "'s knowledge of healing magic aids you in curing the grove and lifting the dark magic curse." << endl;
+
+		}
+		else if (school == "Death") {
+			cout << "You and " << friendChosen.name << " descend into the Haunted Crypt. "
+				<< friendChosen.name << "'s necromantic powers allow you to communicate with the spirits, easing their unrest and solving the mystery of the crypt." << endl;
+
+		}
+		else if (school == "Storm") {
+			cout << "You and " << friendChosen.name << " sail to the eye of the Tempest Sea. "
+				<< friendChosen.name << "'s storm magic helps you navigate the treacherous waters and calm the raging storm." << endl;
+
+		}
+		else if (school == "Illusion") {
+			cout << "You and " << friendChosen.name << " enter the Maze of Mirrors. "
+				<< friendChosen.name << "'s illusionary expertise helps you distinguish reality from illusion, allowing you to uncover the maze's secrets." << endl;
+		}
+
+	}
+	else if (questChoice == 2) {
+		if (school == "Fire") {
+			cout << "You and " << friendChosen.name << " seek out the Phoenix's Rebirth. "
+				<< friendChosen.name << "'s deep connection with fire creatures aids you in gaining the phoenix's trust, and you learn the secrets of eternal flame together." << endl;
+
+		}
+		else if (school == "Ice") {
+			cout << "You and " << friendChosen.name << " search for the Ice Dragon. "
+				<< friendChosen.name << "'s icy skills help you track down the dragon, and together you either ally with it or defeat it to protect your realm." << endl;
+
+		}
+		else if (school == "Life") {
+			cout << "You and " << friendChosen.name << " confront the Great Forest Guardian. "
+				<< friendChosen.name << "'s healing magic helps purify the corrupted creature, restoring its role as protector of the forest." << endl;
+
+		}
+		else if (school == "Death") {
+			cout << "You and " << friendChosen.name << " hunt for the Reaper's Scythe. "
+				<< friendChosen.name << "'s knowledge of dark artifacts is crucial in tracking down the scythe before it falls into the wrong hands." << endl;
+
+		}
+		else if (school == "Storm") {
+			cout << "You and " << friendChosen.name << " face the Thunder God's Challenge. "
+				<< friendChosen.name << "'s mastery of lightning magic aids you in overcoming the challenges and proving your worth to the Thunder God." << endl;
+
+		}
+		else if (school == "Illusion") {
+			cout << "You and " << friendChosen.name << " attend the Phantom's Masquerade. "
+				<< friendChosen.name << "'s illusionary tricks help you see through the deceptions and thwart the hidden plot at the ball." << endl;
+		}
+	}
+
+	cout << "Your quest was a success! You and " << friendChosen.name << " return stronger and wiser from your adventure." << endl;
+}
+// structure for friends
+
 
 //function to learn magic
 void learnMagic(const string& school) {
