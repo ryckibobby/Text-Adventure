@@ -929,6 +929,26 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< "you can feel the dark magic sapping the life from everything around you. " << friendChosen.name << "uses their healing magic to bolster your strength, "
 				<< "and together you work to cleanse the grove and uncover the dark force behind its demise." << endl;
 
+			cout << "1. Use your ice magic to melt the ice and restore the forest.\n";
+			cout << "2. Find the Ice Elemental causing the freeze and confront it. \n";
+			cout << "3. Return to the school dorm to gather more supplies.\n";
+			cout << "What do you choose to do? (1, 2, or 3): ";
+			cin >> questDecision;
+			cin.ignore();
+
+			if (questDecision == 1) {
+				cout << "You focus your energy and melt the ice, freezing the forest from its forzen state. The forest spirits thank you with an enchanted Frost Amulet.\n";
+				player.addItem(Item("Frost Amulet", "An amulet infused with the power of frost."));
+			}
+			else if (questDecision == 2) {
+				cout << "You track down the Ice Elemental and defeat it in a fierce battle. The experience grants you the skill 'Cold Resistance.'\n";
+				player.addSkill("Cold Resistance");
+			}
+			else if (questDecision == 3) {
+				cout << "You decide to retreat and gather more supplies. Back at the dorm, you prepare for another day. \n";
+				return;
+			}
+
 		}
 		else if (school == "Life") {
 			cout << "The Enchanted Grove" << endl;
@@ -936,11 +956,53 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< "you can feel the dark magic sapping the life from everything around you. " << friendChosen.name << " uses their healing magic to bolster your strength, "
 				<< "and together you work to cleanse the grove and uncover the dark force behind its demise." << endl;
 
+			cout << "You have successfully healed the Enchanted Grove. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Nature's Embrace' - Increases your healing magic potency." << endl;
+			cout << "2. Receive an item: 'Ancient Seed' - A seed that can be used to grow a magical plant." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Nature's Embrace");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Ancient Seed", "A seed that can grow into a magical plant."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
+
 		}
 		else if (school == "Death") {
 			cout << "The Haunted Crypt" << endl;
 			cout << "   The ancient crypt looms before you, its entrance guarded by restless spirits. The air is thick with the scent of decay, and the whispers of the dead "
 				<< "fill your mind. With " << friendChosen.name << " by your side, you enter the crypt, ready to confront the tormented souls and lay them to rest." << endl;
+
+			cout << "You have put the spirits of the Haunted Crypt to rest. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Soul Whisper' - Allows you to communicate with spirits." << endl;
+			cout << "2. Receive an item: 'Spectral Lantern' - A lantern that guides you through the dark." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Soul Whisper");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Spectral Lantern", "A lantern that illuminates the darkest of places."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
 
 		}
 		else if (school == "Storm") {
@@ -949,11 +1011,53 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< friendChosen.name << " channels the power of the storm to guide your ship through the treacherous waters. Together, you must calm the storm before it "
 				<< "destroys everything in its path." << endl;
 
+			cout << "You have calmed the Tempest Sea. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Storm Surge' - Enhances your control over lightning and water magic." << endl;
+			cout << "2. Receive an item: 'Conductor's Rod' - A rod that increases your lightning magic efficiency." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Storm Surge");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Conductor's Rod", "A rod that amplifies lightning magic."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
+
 		}
 		else if (school == "Illusion") {
 			cout << "The Maze of Mirrors" << endl;
 			cout << "   The labyrinth stretches before you, its walls lined with countless mirrors. Each reflection is a potential trap, an illusion designed to confuse and mislead. "
 				<< friendChosen.name << " uses their illusionary magic to help you see through the deceptions, guiding you deeper into the maze. Somewhere within, the truth waits to be uncovered." << endl;
+
+			cout << "You have navigated the Maze of Mirrors. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Mirror Image' - Creates illusionary duplicates of yourself." << endl;
+			cout << "2. Receive an item: 'Crystal Prism' - An item that can amplify illusion magic." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Mirror Image");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Crystal Prism", "A prism that enhances illusion magic."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
 		}
 
 	}
@@ -964,6 +1068,24 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< "You and " << friendChosen.name << " journey to find the phoenix, hoping to gain its trust and learn the secrets of eternal flame. "
 				<< "The path is treacherous, but the rewards could be unimaginable." << endl;
 
+			 cout << "1. Approach the Phoenix and attempt to bond with it.\n";
+            cout << "2. Search the canyon for ancient scrolls containing fire magic secrets.\n";
+            cout << "3. Return to the school dorm to rest and reconsider your strategy.\n";
+            cout << "What do you choose to do? (1, 2, or 3): ";
+            cin >> questDecision;
+            cin.ignore();
+
+            if (questDecision == 1) {
+                cout << "The Phoenix accepts your bond, and in return, grants you the skill 'Phoenix's Blessing.'\n";
+                player.addSkill("Phoenix's Blessing");
+            } else if (questDecision == 2) {
+                cout << "You find an ancient scroll and learn a new spell: 'Flame Burst.'\n";
+                player.addSkill("Flame Burst");
+            } else if (questDecision == 3) {
+                cout << "You decide to retreat and rest. Back at the dorm, you prepare for another day.\n";
+                return;
+            }
+
 		}
 		else if (school == "Ice") {
 			cout << "The Ice Dragon" << endl;
@@ -971,11 +1093,52 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< "You and " << friendChosen.name << " set out to find the dragon, your every step crunching on the icy ground. Will you seek to ally with the dragon, "
 				<< "or must you defeat it to protect your realm?" << endl;
 
+			cout << "1. Attempt to communicate with the Ice Dragon and form an alliance.\n";
+			cout << "2. Engage the Ice Dragon in battle to prove your strength.\n";
+			cout << "3. Return to the school dorm to seek advice from your mentors.\n";
+			cout << "What do you choose to do? (1, 2, or 3): ";
+			cin >> questDecision;
+			cin.ignore();
+
+			if (questDecision == 1) {
+				cout << "The Ice Dragon agrees to an alliance, bestowing upon you the skill 'Dragon's Protection.'\n";
+				player.addSkill("Dragon's Protection");
+			}
+			else if (questDecision == 2) {
+				cout << "You defeat the Ice Dragon in a fierce battle, earning a Dragon Scale Shield as a reward.\n";
+				player.addItem(Item("Dragon Scale Shield", "A shield made from the scales of an Ice Dragon."));
+			}
+			else if (questDecision == 3) {
+				cout << "You decide to retreat and seek advice. Back at the dorm, you prepare for another day.\n";
+				return;
+			}
+
 		}
 		else if (school == "Life") {
 			cout << "The Great Forest Guardian" << endl;
 			cout << "   The forest trembles under the footsteps of the corrupted guardian. Once a protector of nature, it now threatens the very land it once saved. "
 				<< friendChosen.name << " aids you in purifying the guardian's spirit, hoping to restore its role as the forest's protector." << endl;
+
+			cout << "You have purified the Great Forest Guardian. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Guardian's Blessing' - Grants increased protection from natural elements." << endl;
+			cout << "2. Receive an item: 'Mystic Bark' - A piece of the Guardian's bark with magical properties." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Guardian's Blessing");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Mystic Bark", "A piece of magical bark from the Great Forest Guardian."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
 
 		}
 		else if (school == "Death") {
@@ -984,6 +1147,27 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< "You and " << friendChosen.name << " track down the thief, knowing that the consequences of failure could be catastrophic. "
 				<< "The journey will be perilous, but the fate of the world may rest on your success." << endl;
 
+			cout << "You have recovered the Reaper's Scythe. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Death's Touch' - Enhances your necromantic powers." << endl;
+			cout << "2. Receive an item: 'Grim Cloak' - A cloak that offers protection against dark magic." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Death's Touch");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Grim Cloak", "A cloak that shields the wearer from dark forces."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
+
 		}
 		else if (school == "Storm") {
 			cout << "The Thunder God's Challenge" << endl;
@@ -991,12 +1175,54 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< friendChosen.name << " stands beside you as you face the god's challenges, each one designed to test your mastery of storm magic. "
 				<< "Only by overcoming these trials can you earn the Thunder God's favor." << endl;
 
+			cout << "You have completed the Thunder God's Challenge. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Thunder Strike' - A powerful lightning attack spell." << endl;
+			cout << "2. Receive an item: 'Storm Amulet' - An amulet that protects against electrical attacks." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Thunder Strike");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Storm Amulet", "An amulet that offers protection from lightning."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
+
 		}
 		else if (school == "Illusion") {
 			cout << "The Phantom's Masquerade" << endl;
 			cout << "   The grand ballroom is filled with masked figures, each one a mystery. The Phantom's Masquerade is known for its intrigue, "
 				<< "and tonight you and " << friendChosen.name << " must uncover the true identities of the guests. "
 				<< "But beware—nothing is as it seems, and the night holds many secrets." << endl;
+
+			cout << "You have uncovered the plot at the Phantom's Masquerade. What would you like to do next?" << endl;
+			cout << "1. Learn a new skill: 'Veil of Shadows' - A spell that makes you invisible for a short period." << endl;
+			cout << "2. Receive an item: 'Mask of the Phantom' - A mask that enhances your illusion magic." << endl;
+			cout << "3. Return to your dorm." << endl;
+
+			int choice;
+			cin >> choice;
+
+			if (choice == 1) {
+				player.addSkill("Veil of Shadows");
+			}
+			else if (choice == 2) {
+				player.addItem(Item("Mask of the Phantom", "A mask that boosts your illusionary abilities."));
+			}
+			else if (choice == 3) {
+				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			}
+			else {
+				cout << "Invalid choice. Returning to your dorm." << endl;
+			}
 		}
 	}
 
