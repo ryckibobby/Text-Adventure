@@ -37,8 +37,8 @@ class Player {
 		Player(const string& n) : name(n) {}
 
 		void addItem(const Item& item) {
-			inventory.push_back(item);
-			cout << item.name << "has been added to your inventory." << endl;
+			
+			cout << "Item added: " << item.name << " - " << item.description << endl;
 		}
 
 		void showInventory() const {
@@ -96,10 +96,11 @@ class Skill {
 };
 class Item {
 	public:
+		int id;
 		string name;
 		string description;
 
-		Item(const string& n, const string& d) : name(n), description(d) {}
+		Item(int itemId, string itemName, string itemDescription) : id(itemId), name(itemName), description(itemDescription) {}
 
 
 };
@@ -109,6 +110,11 @@ class Friend {
 		string name;
 		string specialty;
 };
+
+void addItemToInventory(const Item& item) {
+	cout << "Item" << item.name << "with ID" << item.id << " added to inventory." << endl;
+	cout << "Description: " << item.description << endl;
+}
 
 int main()
 {
@@ -291,7 +297,7 @@ int main()
 	cin.ignore();
 
 	if (learnChoice == 1) {
-		learnMagic(school);
+		learnMagic(school, player);
 	}
 
 	cout << "Would you like to embark on a quest, " << playerName << "? (1 for Yes, 0 for No)" << endl;
@@ -303,7 +309,7 @@ int main()
 		Friend defaultFriend;
 		defaultFriend.name = "Bob";
 		defaultFriend.specialty = "None";
-		embarkQuest(school, defaultFriend);
+		embarkQuest(school, defaultFriend, player);
 	}
 
 	cout << "Would you like to view your inventory, " << playerName << "? (1 for Yes, 0 for No)" << endl;
@@ -910,7 +916,12 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 			if (questDecision == 1) {
 				cout << "You bravely channel your fire magic, directiong the lava away from the village. In the gratitude, the villagers reward you with a Phoenix Feather.\n";
-				player.addItem(Item("Phoenix Feather", "A feather from the legendary phoenix."));
+				//creating the item object 
+				Item phoenixFeather(1, "Phoenix Feather", "A feather from the legendary phoenix.");
+
+				//adding item to inventory
+				addItemToInventory(phoenixFeather);
+
 			}
 			else if (questDecision == 2) {
 				cout << "The Fire Spirit grants you the skill 'Fire Mastery,' increasing your control over fire magic.";
@@ -938,7 +949,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 			if (questDecision == 1) {
 				cout << "You focus your energy and melt the ice, freezing the forest from its forzen state. The forest spirits thank you with an enchanted Frost Amulet.\n";
-				player.addItem(Item("Frost Amulet", "An amulet infused with the power of frost."));
+				Item frostAmulet(1, "Frost Amulet", "An amulet infused with the power of frost.");
+				addItemToInventory(frostAmulet);
 			}
 			else if (questDecision == 2) {
 				cout << "You track down the Ice Elemental and defeat it in a fierce battle. The experience grants you the skill 'Cold Resistance.'\n";
@@ -968,7 +980,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Nature's Embrace");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Ancient Seed", "A seed that can grow into a magical plant."));
+				Item ancientSeed(1, "Ancient Seed", "A seed that can grow into a magical plant.");
+				addItemToInventory(ancientSeed);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -995,7 +1008,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Soul Whisper");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Spectral Lantern", "A lantern that illuminates the darkest of places."));
+				Item spectralLantern(1, "Spectral Lantern", "A lantern that illuminates the darkest of places.");
+				addItemToInventory(spectralLantern);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -1023,7 +1037,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Storm Surge");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Conductor's Rod", "A rod that amplifies lightning magic."));
+				Item conductorRod(1, "Conductor's Rod", "A rod that amplifies lightning magic.");
+				addItemToInventory(conductorRod);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -1050,7 +1065,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Mirror Image");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Crystal Prism", "A prism that enhances illusion magic."));
+				Item crystalPrism(1, "Crystal Prism", "A prism that enhances illusion magic.");
+				addItemToInventory(crystalPrism);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -1106,7 +1122,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			}
 			else if (questDecision == 2) {
 				cout << "You defeat the Ice Dragon in a fierce battle, earning a Dragon Scale Shield as a reward.\n";
-				player.addItem(Item("Dragon Scale Shield", "A shield made from the scales of an Ice Dragon."));
+				Item dragonScaleShield(1, "Dragon Scale Shield", "A shield made from the scales of an Ice Dragon.");
+				addItemToInventory(dragonScaleShield);
 			}
 			else if (questDecision == 3) {
 				cout << "You decide to retreat and seek advice. Back at the dorm, you prepare for another day.\n";
@@ -1131,7 +1148,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Guardian's Blessing");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Mystic Bark", "A piece of magical bark from the Great Forest Guardian."));
+				Item mysticBark(1, "Mystic Bark", "A piece of magical bark from the Great Forest Guardian.");
+				addItemToInventory(mysticBark);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -1159,7 +1177,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Death's Touch");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Grim Cloak", "A cloak that shields the wearer from dark forces."));
+				Item grimCloak(1, "Grim Cloak", "A cloak that shields the wearer from dark forces.");
+				addItemToInventory(grimCloak);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -1187,7 +1206,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Thunder Strike");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Storm Amulet", "An amulet that offers protection from lightning."));
+				Item stormAmulet(1, "Storm Amulet", "An amulet that offers protection from lightning.");
+				addItemToInventory(stormAmulet);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
@@ -1215,7 +1235,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				player.addSkill("Veil of Shadows");
 			}
 			else if (choice == 2) {
-				player.addItem(Item("Mask of the Phantom", "A mask that boosts your illusionary abilities."));
+				Item maskPhantom(1, "Mask of the Phantom", "A mask that boosts your illusionary abilities.");
+				addItemToInventory(maskPhantom);
 			}
 			else if (choice == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
