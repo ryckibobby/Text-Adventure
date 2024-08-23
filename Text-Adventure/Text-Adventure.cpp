@@ -4,7 +4,7 @@
 
 using namespace std;
 
-//function declarations 
+//function faction declarations 
 void exploreFireFaction1();
 void exploreFireFaction2();
 void exploreFireFaction3();
@@ -24,6 +24,7 @@ void exploreIllusionFaction1();
 void exploreIllusionFaction2();
 void exploreIllusionFaction3();
 
+//learn and quest function
 void learnMagic(const string& school);
 void embarkQuest(const string& school, const Friend& friendChosen); 
 
@@ -119,31 +120,33 @@ void addItemToInventory(const Item& item) {
 int main()
 {
 	string playerName;
+	char playAgain;
 
-	cout << "Welcome to the Wizard's Adventure!" << endl;
-	cout << "What is your name, young wizard?" << endl;
-	getline(cin, playerName);
+	do {
+		cout << "Welcome to the Wizard's Adventure!" << endl;
+		cout << "What is your name, young wizard?" << endl;
+		getline(cin, playerName);
 
-	Player player(playerName);
+		Player player(playerName);
 
-	cout << "Hello, " << playerName << "! Let's begin your adventure." << endl;
+		cout << "Hello, " << playerName << "! Let's begin your adventure." << endl;
 
-	cout << "Choose your study of magic:" << endl;
-	cout << "1. Fire" << endl;
-	cout << "2. Ice" << endl;
-	cout << "3. Life" << endl;
-	cout << "4. Death" << endl;
-	cout << "5. Storm" << endl;
-	cout << "6. Illusion" << endl;
+		cout << "Choose your study of magic:" << endl;
+		cout << "1. Fire" << endl;
+		cout << "2. Ice" << endl;
+		cout << "3. Life" << endl;
+		cout << "4. Death" << endl;
+		cout << "5. Storm" << endl;
+		cout << "6. Illusion" << endl;
 
-	int schoolChoice;
-	cin >> schoolChoice;
-	cin.ignore();
+		int schoolChoice;
+		cin >> schoolChoice;
+		cin.ignore();
 
 
-	//school choices
-	string school;
-	switch (schoolChoice) {
+		//school choices
+		string school;
+		switch (schoolChoice) {
 		case 1:
 			school = "Fire";
 			cout << "Choose your faction within the School of Fire:" << endl;
@@ -189,16 +192,16 @@ int main()
 		default:
 			cout << "Invalid school choice. The adventure ends here." << endl;
 			return 0;
-	}
-	
-	int factionChoice;
-	cin >> factionChoice;
-	cin.ignore();
+		}
+
+		int factionChoice;
+		cin >> factionChoice;
+		cin.ignore();
 
 
-	//explore options
-	if (school == "Fire") {
-		switch (factionChoice) {
+		//explore options
+		if (school == "Fire") {
+			switch (factionChoice) {
 			case 1:
 				exploreFireFaction1();
 				break;
@@ -211,9 +214,10 @@ int main()
 			default:
 				cout << "Invalid faction choice." << endl;
 				break;
+			}
 		}
-	} else if (school == "Ice") {
-		switch (factionChoice) {
+		else if (school == "Ice") {
+			switch (factionChoice) {
 			case 1:
 				exploreIceFaction1();
 				break;
@@ -226,24 +230,26 @@ int main()
 			default:
 				cout << "Invalid faction choice." << endl;
 				break;
+			}
 		}
-	} else if (school == "Life") {
-		switch (factionChoice) {
+		else if (school == "Life") {
+			switch (factionChoice) {
 			case 1:
 				exploreLifeFaction1();
 				break;
 			case 2:
 				exploreLifeFaction2();
 				break;
-			case 3:	
+			case 3:
 				exploreLifeFaction3();
 				break;
 			default:
 				cout << "Invalid faction choice." << endl;
 				break;
+			}
 		}
-	} else if (school == "Death") {
-		switch (factionChoice) {
+		else if (school == "Death") {
+			switch (factionChoice) {
 			case 1:
 				exploreDeathFaction1();
 				break;
@@ -256,9 +262,10 @@ int main()
 			default:
 				cout << "Invalid faction choice." << endl;
 				break;
+			}
 		}
-	} else if (school == "Storm") {
-		switch (factionChoice) {
+		else if (school == "Storm") {
+			switch (factionChoice) {
 			case 1:
 				exploreStormFaction1();
 				break;
@@ -271,9 +278,10 @@ int main()
 			default:
 				cout << "Invalid faction choice." << endl;
 				break;
+			}
 		}
-	} else if (school == "Illusion") {
-		switch (factionChoice) {
+		else if (school == "Illusion") {
+			switch (factionChoice) {
 			case 1:
 				exploreIllusionFaction1();
 				break;
@@ -286,42 +294,53 @@ int main()
 			default:
 				cout << "Invalid faction choice." << endl;
 				break;
+			}
 		}
-	} else {
-		cout << "Invalid school choice." << endl;
-	}
+		else {
+			cout << "Invalid school choice." << endl;
+		}
 
-	cout << "Would youl like to learn magic, " << playerName << "? (1 for Yes, 0 for No)" << endl;
-	int learnChoice;
-	cin >> learnChoice;
-	cin.ignore();
+		cout << "Would youl like to learn magic, " << playerName << "? (1 for Yes, 0 for No)" << endl;
+		int learnChoice;
+		cin >> learnChoice;
+		cin.ignore();
 
-	if (learnChoice == 1) {
-		learnMagic(school, player);
-	}
+		if (learnChoice == 1) {
+			learnMagic(school, player);
+		}
 
-	cout << "Would you like to embark on a quest, " << playerName << "? (1 for Yes, 0 for No)" << endl;
-	int questChoice;
-	cin >> questChoice;
-	cin.ignore();
+		cout << "Would you like to embark on a quest, " << playerName << "? (1 for Yes, 0 for No)" << endl;
+		int questChoice;
+		cin >> questChoice;
+		cin.ignore();
 
-	if (questChoice == 1) {
-		Friend defaultFriend;
-		defaultFriend.name = "Bob";
-		defaultFriend.specialty = "None";
-		embarkQuest(school, defaultFriend, player);
-	}
+		if (questChoice == 1) {
+			Friend defaultFriend;
+			defaultFriend.name = "Bob";
+			defaultFriend.specialty = "None";
+			embarkQuest(school, defaultFriend, player);
+		}
 
-	cout << "Would you like to view your inventory, " << playerName << "? (1 for Yes, 0 for No)" << endl;
-	int inventoryChoice;
-	cin >> inventoryChoice;
-	if (inventoryChoice == 1) {
-		player.showInventory();
-	}
+		cout << "Would you like to view your inventory, " << playerName << "? (1 for Yes, 0 for No)" << endl;
+		int inventoryChoice;
+		cin >> inventoryChoice;
+		if (inventoryChoice == 1) {
+			player.showInventory();
+		}
 
-	cout << "The adventure ends here. Thank you for playing, " << playerName << "!" << endl;
+		cout << "Do you want to play again? (y/n): ";
+		cin >> playAgain;
+		cin.ignore();
+
+		cout << endl;
+
+	} while (playAgain == 'y' || playAgain == 'Y');
+
+	cout << "Thanks for playing!" << endl;
 
 	return 0;
+	
+	
 }
 
 void exploreFireFaction1() {
