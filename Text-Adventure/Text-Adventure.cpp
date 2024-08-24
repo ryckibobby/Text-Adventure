@@ -941,21 +941,62 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				//adding item to inventory
 				addItemToInventory(phoenixFeather);
 
+				//continue quest
+				cout << "As you leave, you notice the volcano rumbling again. Do you: \n";
+				cout << "1. Investigate the cause.\n";
+				cout << "2. Continue back to the village.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "You discover an ancient artifact at the volano's core, radianting immense power. Do you:\n";
+					cout << "1. Attempt to harness its power.\n";
+					cout << "2. Destroy it to prevent further eruptions.\n";
+					cin >> questDecision;
+					cin.ignore();
+
+					if (questDecision == 1) {
+						cout << "The artifact grants you the skill 'Volcanic Might,' emjamcomg your fire magic significantly.\n";
+						player.addSkill("Spirit Bond");
+					}
+					else {
+						cout << "Destroying the artifact stabilizes the volcano permanently. The villagers reward you with a Fireproof Cloak.\n ";
+						Item fireproofCloak(1, "Fireproof Cloak", "A cloak that offers protection against extreme heat.");
+						addItemToInventory(fireproofCloak);
+					}
+				}
+				else {
+					cout << "You return to the village safely, but the volcano remains unstable, posing a future threat.\n";
+				}
+
 			}
 			else if (questDecision == 2) {
-				cout << "The Fire Spirit grants you the skill 'Fire Mastery,' increasing your control over fire magic.";
+				cout << "The Fire Spirit grants you the skill 'Fire Mastery,' increasing your control over fire magic. Do you:\n";
 				player.addSkill("Fire Mastery");
+				cout << "1. Ask the spirit to join you on your quest.\n";
+				cout << "2. Leave the spirit to guard the volcano.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "The Fire Spirit agrees to accompany you, granting you a permanent boost to your fire magic.\n";
+					player.addSkill("Spirit Bond");
+				}
+				else {
+					cout << "The spirit remains at the volcano, ensuring it stays dormant, The village is safe, and you gain the 'Guardian of Fire' title.\n";
+					//add title class
+					player.addTitle("Guardian of Fire");
+				}
 			}
-			else if (questDecision == 3) {
-				cout << "You decide to retreat and plan your next move. Back at the dorm, you prepare for another day.\n";
+			else {
+				cout << "You decide to retreat and plan your next move. Back at the dorm, you prepare for another day. \n";
 				return;
 			}
-
-
 		}
+	}
 		else if (school == "Ice") {
 			cout << " The Frozen Tundra" << endl;
-			cout << "	 The once verdant forest now lies under a thick blanket of ice. The cold bires at your skin, and the trees stand as liefless statues. "
+			cout << "	The once verdant forest now lies under a thick blanket of ice. The cold bires at your skin, and the trees stand as liefless statues. "
 				<< "you can feel the dark magic sapping the life from everything around you. " << friendChosen.name << "uses their healing magic to bolster your strength, "
 				<< "and together you work to cleanse the grove and uncover the dark force behind its demise." << endl;
 
@@ -970,16 +1011,58 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				cout << "You focus your energy and melt the ice, freezing the forest from its forzen state. The forest spirits thank you with an enchanted Frost Amulet.\n";
 				Item frostAmulet(1, "Frost Amulet", "An amulet infused with the power of frost.");
 				addItemToInventory(frostAmulet);
+
+				cout << "However, you notice a lingering coldness in the air. Do you:\n";
+				cout << "1. Investigate the source of the cold.\n";
+				cout << "2. Ignore it and return to the village.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "You discover a diden cave, where a powerful Ice Golem lies dormant. Do you:\n";
+					cout << "1. Attempt to awaken the golem as an ally.\n";
+					cout << "2. Seal the cave to prevent the golem from causing harm.\n";
+					cin >> questDecision;
+					cin.ignore();
+
+					if (questDecision == 1) {
+						cout << "The golem awakens and, impressed by your strength, offers to serve as your protector. \n";
+						//add companion class
+						player.addCompanion("Ice Golem");
+					}
+					else {
+						cout << "You seal the cave, ensuring the golem remains asleep, and gain the 'Protector of the Forest' title.\n";
+						player.addTitle("Protector of the Forest");
+					}
+				}
+				else {
+					cout << "You return to the village but the forest's recovery is slow and uncertain.\n";
+				}
+
 			}
 			else if (questDecision == 2) {
-				cout << "You track down the Ice Elemental and defeat it in a fierce battle. The experience grants you the skill 'Cold Resistance.'\n";
-				player.addSkill("Cold Resistance");
-			}
-			else if (questDecision == 3) {
-				cout << "You decide to retreat and gather more supplies. Back at the dorm, you prepare for another day. \n";
-				return;
-			}
+				cout << "The Ice Elemental reveals itself, but it is not the source of the curse. Aftera fierce battle, you gain the 'Ice Elemental's Blessing' skill.\n";
+				player.addSkill("Ice Elemental's Blessing");
 
+				cout << "Do you: \n";
+				cout << "1. Ask the elemental for guidance on the true source.\n";
+				cout << "2. Leave the elemntal in peace and return to the village.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "The elemental guides you to an ancient shrine, where you discover the true source of the dark magic. "
+						<< "You cleanse the shrine, earning the respect of the forest spirits.\n";
+					player.addTitle("Forest Spirits Ally");
+				}
+			}
+			else {
+				cout << "You return to the village, content with your victory, but the source of the dark magic remains hidden.\n";
+			}
+		}
+		else if (questDecision == 3) {
+			cout << "You decide to retreat and gather more supplies. Back at the dorm, you prepare for another day. \n";
+			return;
 		}
 		else if (school == "Life") {
 			cout << "The Enchanted Grove" << endl;
@@ -987,115 +1070,188 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				<< "you can feel the dark magic sapping the life from everything around you. " << friendChosen.name << " uses their healing magic to bolster your strength, "
 				<< "and together you work to cleanse the grove and uncover the dark force behind its demise." << endl;
 
-			cout << "You have successfully healed the Enchanted Grove. What would you like to do next?" << endl;
-			cout << "1. Learn a new skill: 'Nature's Embrace' - Increases your healing magic potency." << endl;
-			cout << "2. Receive an item: 'Ancient Seed' - A seed that can be used to grow a magical plant." << endl;
-			cout << "3. Return to your dorm." << endl;
+			cout << "1. Use your life magic to heal the land." << endl;
+			cout << "2. Search for the source of the dark magic." << endl;
+			cout << "3. Retreat to the school dorm and prepare for another attmept." << endl;
+			cout << "What do you choose to do? (1, 2, or 3): " <<endl;
 
 			int choice;
 			cin >> choice;
 
 			if (choice == 1) {
+				cout << "You channel your life magic into the grove, reviving the plants and cleansing the soil. The forest spirits reward you with the 'Nature's Gift' skill.\n";
 				player.addSkill("Nature's Embrace");
+
+				cout << "However, you sense the curse is still present. Do you:\n";
+				cout << "1. Investigate the deeper parts of the grove.\n";
+				cout << "2. Return to the village and report your success.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "You discover the hidden altar, where a dark ritual is being peformed. Do you:\n";
+					cout << "1. Disrupt the ritual and cleanse the altar.\n";
+					cout << "2. Confront the dark sorcerer performing the ritual.\n";
+					cin >> questDecision;
+					cin.ignore();
+
+					if (questDecision == 1) {
+						cout << "You cleanse the altar, banishing the dark magic. The spirits grant tou the 'Grove Protector' title.\n";
+						player.addTitle("Grove Protector");
+					}
+					else {
+						cout << "You confront the sorcerer, and after a fierce battle, you defeat them, earning the 'Dark Magic Bane' title.\n";
+						player.addTitle("Dark Magic Bane");
+					}
+				}
+				else {
+					cout << "You return to the village, bnut the grove remains vulnerable to future curses.\n";
+				}
 			}
 			else if (choice == 2) {
-				Item ancientSeed(1, "Ancient Seed", "A seed that can grow into a magical plant.");
-				addItemToInventory(ancientSeed);
-			}
-			else if (choice == 3) {
-				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+				cout << "You search the grove and find the source of the dark magic: a cursed artifact. Do you:\n";
+				cout << "1. Attempt to purifty the artifcat.\n";
+				cout << "2. Destroy the artifact.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "Purifying the artifact cleanses the curse, but at the cost of your own life force. You gain the 'Cursed Purifier' skill.\n";
+					player.addSkill("Cursed Purifier");
+				}
+				else {
+					cout << "Destroying the artifact lifts the curse completely, and the grove flourishes once more. The spirits grant you the 'Life Guardian' title.\n";
+					player.addTitle("Life Guardian");
+				}
 			}
 			else {
-				cout << "Invalid choice. Returning to your dorm." << endl;
+				cout << "You decide to retreat and plan your next move. Back at the dorm, you prepare for another day.\n";
+				return;
+				}
 			}
-
 		}
-		else if (school == "Death") {
-			cout << "The Haunted Crypt" << endl;
-			cout << "   The ancient crypt looms before you, its entrance guarded by restless spirits. The air is thick with the scent of decay, and the whispers of the dead "
-				<< "fill your mind. With " << friendChosen.name << " by your side, you enter the crypt, ready to confront the tormented souls and lay them to rest." << endl;
+	else if (school == "Death") {
+		cout << "The Haunted Crypt" << endl;
+		cout << "   The ancient crypt looms before you, its entrance guarded by restless spirits. The air is thick with the scent of decay, and the whispers of the dead "
+			<< "fill your mind. With " << friendChosen.name << " by your side, you enter the crypt, ready to confront the tormented souls and lay them to rest." << endl;
 
-			cout << "You have put the spirits of the Haunted Crypt to rest. What would you like to do next?" << endl;
-			cout << "1. Learn a new skill: 'Soul Whisper' - Allows you to communicate with spirits." << endl;
-			cout << "2. Receive an item: 'Spectral Lantern' - A lantern that guides you through the dark." << endl;
-			cout << "3. Return to your dorm." << endl;
+		cout << "1. Use your necromancy to communicate with the spirits and calm them." << endl;
+		cout << "2. 2. Search for the source of the unrest." << endl;
+		cout << "3. Retreat to the school dorm and prepare for another attempt." << endl;
+		cout << "What do you choose to do? (1, 2, or 3): ";
+		cin >> questDecision;
+		cin.ignore();
 
-			int choice;
-			cin >> choice;
+		if (questDecision == 1) {
+			cout << "You succesfully communicate with the spirits and help them find peace. In gratitude, they grant you the 'Spirit Whisperer' skill.\n";
+			player.addSkill("Spirit Whisperer");
 
-			if (choice == 1) {
-				player.addSkill("Soul Whisper");
-			}
-			else if (choice == 2) {
-				Item spectralLantern(1, "Spectral Lantern", "A lantern that illuminates the darkest of places.");
-				addItemToInventory(spectralLantern);
-			}
-			else if (choice == 3) {
-				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			cout << "However, you sense a deeper unrest. Do you:\n";
+			cout << "1. Investigate the lower levels of the crypt.\n";
+			cout << "2. Leave the crypt and return to the village.\n";
+			cin >> questDecision;
+			cin.ignore();
+
+			if (questDecision == 1) {
+				cout << "You find a powerful spirit trapped by a curse. Do you:\n";
+				cout << "1. Free the spirit from its torment.\n";
+				cout << "2. Bind the spirit to your will.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "Freeing the spirit lifts the curse on the crypt, and the spirit grants you the 'Crypt Guardian' title.\n";
+					player.addTitle("Crypt Guardian");
+				}
+				else {
+					cout << "Binding the spirit to your will grants you immense power, but at a cost to your own soul. You gain the 'Soul Binder' skill.\n";
+					player.addSkill("Soul Binder");
+				}
 			}
 			else {
-				cout << "Invalid choice. Returning to your dorm." << endl;
+				cout << "You return to the village, but the crypt remains a place of unrest.\n";
 			}
+		} 
+		else if (questDecision == 2) {
+			cout << "You search the crypt and find the source of the unrest: a cursed relic. Do you:\n";
+			cout << "1. Attempt to purify the relic.\n";
+			cout << "2. Destroy the relic.\n";
+			cin >> questDecision;
+			cin.ignore();
 
+			if (questDecision == 1) {
+				cout << "Purifying the relic calms the spirits, but at the cost of some of your own vitality. You gain the 'Cursed Relic Purifier' skill.\n";
+				player.addSkill("Cursed Relic Purifier");
+			}
+			else {
+				cout << "Destroying the relic ends the unrest, and the crypt returns to peace. The spirits grant you the 'Relic Destroyer' title.\n";
+				player.addTitle("Relic Destroyer");
+			}
 		}
+		else {
+			cout << "You decide to retreat and plan your next move. Back at the dorm, you prepare for another day.\n";
+			return;
+		}
+	}
 		else if (school == "Storm") {
 			cout << "The Tempest Sea" << endl;
-			cout << "   The ocean roars beneath the fury of the storm. Waves crash against the cliffs, and the sky is darkened by swirling clouds. "
-				<< friendChosen.name << " channels the power of the storm to guide your ship through the treacherous waters. Together, you must calm the storm before it "
-				<< "destroys everything in its path." << endl;
+			cout << "The storm rages on, with waves crashing against the shore and lightning splitting the sky. You and " << friendChosen.name
+				<< " must command the storm's power to calm the seas and save the coastal towns. The Thunder God himself watches over this trial, "
+				<< "and only those with true mastery over the storm will prevail." << endl;
 
-			cout << "You have calmed the Tempest Sea. What would you like to do next?" << endl;
-			cout << "1. Learn a new skill: 'Storm Surge' - Enhances your control over lightning and water magic." << endl;
-			cout << "2. Receive an item: 'Conductor's Rod' - A rod that increases your lightning magic efficiency." << endl;
-			cout << "3. Return to your dorm." << endl;
+			cout << "1. Use your storm magic to calm the winds and waves.\n";
+			cout << "2. Seek out the Thunder God's guidance.\n";
+			cout << "3. Retreat to the school dorm and prepare for another attempt. \n";
+			cout << "What do you choose to do? (1, 2, or 3): ";
+			cin >> questDecision;
+			cin.ignore();
 
-			int choice;
-			cin >> choice;
+			if (questDecision == 1) {
+				cout << "You focus your storm magic, gradually calming the winds and waves. The Thunder God grants you the 'Stormbringer' title in recognition of your skill.\n";
+				player.addTitle("Stormbringer");
 
-			if (choice == 1) {
-				player.addSkill("Storm Surge");
-			}
-			else if (choice == 2) {
-				Item conductorRod(1, "Conductor's Rod", "A rod that amplifies lightning magic.");
-				addItemToInventory(conductorRod);
-			}
-			else if (choice == 3) {
-				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
-			}
-			else {
-				cout << "Invalid choice. Returning to your dorm." << endl;
-			}
+				cout << "However, the storm's energy lingers in the air. Do you:\n";
+				cout << "1. Investigate the source of the storm's power.\n";
+				cout << "2. Return to the village and rest.\n";
+				cin >> questDecision;
+				cin.ignore();
 
-		}
+				if (questDecision == 1) {
+					cout << "You discover an ancient artifact generating the storm's power. Do you:\n";
+					cout << "1. Harness its power to strengthen your storm magic.\n";
+					cout << "2. Destroy the artifact to prevent future storms.\n";
+					cin >> questDecision;
+					cin.ignore();
+
+					if (questDecision == 1) {
+						cout << "Harnessing the artifact's power greatly enhances your storm magic, granting you the 'Tempest Master' skill.\n";
+						player.addSkill("Tempest Master");
+					}
+					else {
+						cout << "Destroying the artifact stabilizes the region's weather, and you are hailed as a hero by the coastal towns. "
+							<< "The townspeople gift you a Storm Pendant as a token of their gratitude.\n";
+						Item stormPendant(1, "Storm Pendant", "A pendant that enhances storm magic.");
+						addItemToInventory(stormPendant);
+					}
+				}
+				else {
+					cout << "You return to the village, but the storm's power remains a lingering threat.\n";
+				}
+			}
+	}
 		else if (school == "Illusion") {
 			cout << "The Maze of Mirrors" << endl;
-			cout << "   The labyrinth stretches before you, its walls lined with countless mirrors. Each reflection is a potential trap, an illusion designed to confuse and mislead. "
-				<< friendChosen.name << " uses their illusionary magic to help you see through the deceptions, guiding you deeper into the maze. Somewhere within, the truth waits to be uncovered." << endl;
+			cout << "The labyrinth is a disorienting place of shifting reflections and illusions. You and " << friendChosen.name
+				<< " must navigate its twists and turns to uncover the truth hidden within. Only by mastering the art of illusion can you find the way out." << endl;
 
-			cout << "You have navigated the Maze of Mirrors. What would you like to do next?" << endl;
-			cout << "1. Learn a new skill: 'Mirror Image' - Creates illusionary duplicates of yourself." << endl;
-			cout << "2. Receive an item: 'Crystal Prism' - An item that can amplify illusion magic." << endl;
-			cout << "3. Return to your dorm." << endl;
+			cout << "1. Use your illusion magic to reveal the true path.\n";
+			cout << "2. Follow the echoes of your reflection.\n";
+			cout << "3. Retreat to the school dorm and prepare for another attempt. \n";
+			cout << "What do you choose to do? (1, 2, or 3): ";
+			cin >> questDecision;
+			cin.ignore();
 
-			int choice;
-			cin >> choice;
-
-			if (choice == 1) {
-				player.addSkill("Mirror Image");
-			}
-			else if (choice == 2) {
-				Item crystalPrism(1, "Crystal Prism", "A prism that enhances illusion magic.");
-				addItemToInventory(crystalPrism);
-			}
-			else if (choice == 3) {
-				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
-			}
-			else {
-				cout << "Invalid choice. Returning to your dorm." << endl;
-			}
 		}
-
-	}
 	else if (questChoice == 2) {
 		if (school == "Fire") {
 			cout << "The Phoenix's Rebirth" << endl;
