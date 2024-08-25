@@ -24,91 +24,6 @@ void exploreIllusionFaction1();
 void exploreIllusionFaction2();
 void exploreIllusionFaction3();
 
-//learn and quest function
-void learnMagic(const string& school);
-void embarkQuest(const string& school, const Friend& friendChosen); 
-
-
-class Player {
-	private:
-		string name;
-		int level;
-		vector<Title> titles;
-	public:
-		string name;
-		vector<Item> inventory; //store invetory
-		vector<Skill> skills; //store skills
-
-		Player(const string& n) : name(n) {}
-		Player(string name, int level) : name(name), level(level) {}
-
-		void addTitle(const Title& newTitle) {
-			titles.push_back(newTitle);
-
-		}
-
-		void displayTitle() const {
-			if (titles.empty()) {
-				cout << "No titles earned" << endl;
-			}
-			else {
-				cout << "Titles earned: " << endl;
-				for (const auto& title : titles) {
-					title.displayTitleInfo();
-				}
-			}
-		}
-
-		void addItem(const Item& item) {
-			
-			cout << "Item added: " << item.name << " - " << item.description << endl;
-		}
-
-		void showInventory() const {
-			if (inventory.empty()) {
-				cout << "your inventory is empty." << endl;
-				return;
-			}
-			cout << "Your inventory:" << endl;
-			for (const auto& item : inventory) {
-				cout << "- " << item.name << ": " << item.description << endl;
-			}
-		}
-		void addSkill(const string& skillName) {
-			//check if the skill exists
-			for (const Skill& skill : skills) {
-				if (skill.name == skillName) {
-					cout << "You already have the skill: " << skillName << ".\n";
-					return;
-				}
-			}
-			//add skills
-			string skillDescription; //description for skill
-			if (skillName == "Fire Mastery") {
-				skillDescription = "Enhances your control over fire magic.";
-			}
-			else if (skillName == "Cold Resistance") {
-				skillDescription = "Increases your resistance to cold environments and ice magic.";
-			}
-			else if (skillName == "Phoenix's Blessing") {
-				skillDescription = "Grants you the ability to regenerate health faster.";
-			}
-			else if (skillName == "Flame Burst") {
-				skillDescription = "A powerful fire spire spell that creates an explosion of flames.";
-			}
-			else if (skillName == "Dragon's Protection") {
-				skillDescription = "Grants increased defence and resistance to dragon-related attacks.";
-			}
-			skills.push_back(Skill(skillName, skillDescription));
-			cout << "You have learned a new skill: " << skillName << ".\n";
-		}
-		void showSkills()const {
-			cout << "Skills:\n";
-			for (const Skill& skill : skills) {
-				cout << "- " << skill.name << ": " << skill.description << endl;
-			}
-		}
-};
 
 class Title {
 private:
@@ -145,46 +60,31 @@ public:
 class Companion {
 private:
 	string name;
-	string school;  //school of magic or specialization
-	int loyalty;    //level of loyalty or bond with the player
+	string type;  //type of companion
 	vector<string> abilities;  //abilities or skills the companion brings
 
 public:
 	// Constructor
-	Companion(string name, string school, int loyalty, vector<string> abilities)
-		: name(name), school(school), loyalty(loyalty), abilities(abilities) {}
+	Companion(string name, string type, vector<string> abilities)
+		: name(name), type(type), abilities(abilities) {}
 
 	// Getters
 	string getName() const {
 		return name;
 	}
 
-	string getSchool() const {
-		return school;
-	}
-
-	int getLoyalty() const {
-		return loyalty;
+	string getType() const {
+		return type;
 	}
 
 	vector<string> getAbilities() const {
 		return abilities;
 	}
 
-	// Setters
-	void increaseLoyalty(int amount) {
-		loyalty += amount;
-	}
-
-	void decreaseLoyalty(int amount) {
-		loyalty = max(0, loyalty - amount);  //loyalty cannot go below 0
-	}
-
 	// method to display companion information
 	void displayCompanionInfo() const {
 		cout << "Companion: " << name << endl;
-		cout << "School: " << school << endl;
-		cout << "Loyalty: " << loyalty << endl;
+		cout << "Type: " << type << endl;
 		cout << "Abilities: " << endl;
 		for (const auto& ability : abilities) {
 			cout << " - " << ability << endl;
@@ -215,6 +115,111 @@ class Friend {
 		string name;
 		string specialty;
 };
+
+class Player {
+	private:
+		string name;
+		int level;
+		vector<Title> titles; //titles earned by player
+		vector<Companion> companions; //companions acquired by player
+	public:
+		vector<Item> inventory; //store invetory
+		vector<Skill> skills; //store skills
+
+		Player(const string& n) : name(n) {}
+		Player(string name, int level) : name(name), level(level) {}
+
+	void addCompanion(const Companion& newCompanion) {
+		companions.push_back(newCompanion);
+		cout << "you have gained a new companion: " << newCompanion.getName() << endl;
+	}
+
+	void displayCompanions() const {
+		if (companions.empty()) {
+			cout << "No companions acquired." << endl;
+		}
+		else {
+			cout << "Companions: " << endl;
+			for (const auto& companion : companions) {
+				companion.displayCompanionInfo();
+			}
+		}
+	}
+
+	void addTitle(const Title& newTitle) {
+		titles.push_back(newTitle);
+		cout << "You have earned the title: " << newTitle.getName() << endl;
+
+	}
+
+	void displayTitle() const {
+		if (titles.empty()) {
+			cout << "No titles earned" << endl;
+		}
+		else {
+			cout << "Titles earned: " << endl;
+			for (const auto& title : titles) {
+				title.displayTitleInfo();
+			}
+		}
+	}
+
+	void addItem(const Item& item) {
+
+		cout << "Item added: " << item.name << " - " << item.description << endl;
+	}
+
+	void showInventory() const {
+		if (inventory.empty()) {
+			cout << "your inventory is empty." << endl;
+			return;
+		}
+		cout << "Your inventory:" << endl;
+		for (const auto& item : inventory) {
+			cout << "- " << item.name << ": " << item.description << endl;
+		}
+	}
+	void addSkill(const string& skillName) {
+		//check if the skill exists
+		for (const Skill& skill : skills) {
+			if (skill.name == skillName) {
+				cout << "You already have the skill: " << skillName << ".\n";
+				return;
+			}
+		}
+		//add skills
+		string skillDescription; //description for skill
+		if (skillName == "Fire Mastery") {
+			skillDescription = "Enhances your control over fire magic.";
+		}
+		else if (skillName == "Cold Resistance") {
+			skillDescription = "Increases your resistance to cold environments and ice magic.";
+		}
+		else if (skillName == "Phoenix's Blessing") {
+			skillDescription = "Grants you the ability to regenerate health faster.";
+		}
+		else if (skillName == "Flame Burst") {
+			skillDescription = "A powerful fire spire spell that creates an explosion of flames.";
+		}
+		else if (skillName == "Dragon's Protection") {
+			skillDescription = "Grants increased defence and resistance to dragon-related attacks.";
+		}
+		skills.push_back(Skill(skillName, skillDescription));
+		cout << "You have learned a new skill: " << skillName << ".\n";
+	}
+	void showSkills()const {
+		cout << "Skills:\n";
+		for (const Skill& skill : skills) {
+			cout << "- " << skill.name << ": " << skill.description << endl;
+		}
+	}
+};
+
+
+
+//learn and quest function
+void learnMagic(const string& school, Player& player);
+void embarkQuest(const string& school, const Friend& friendChosen, Player& player);
 
 void addItemToInventory(const Item& item) {
 	cout << "Item" << item.name << "with ID" << item.id << " added to inventory." << endl;
@@ -1124,7 +1129,7 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				cin.ignore();
 
 				if (questDecision == 1) {
-					cout << "You discover a diden cave, where a powerful Ice Golem lies dormant. Do you:\n";
+					cout << "You discover a hidden cave, where a powerful Ice Golem lies dormant. Do you:\n";
 					cout << "1. Attempt to awaken the golem as an ally.\n";
 					cout << "2. Seal the cave to prevent the golem from causing harm.\n";
 					cin >> questDecision;
@@ -1132,8 +1137,9 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 					if (questDecision == 1) {
 						cout << "The golem awakens and, impressed by your strength, offers to serve as your protector. \n";
-						//add companion class
-						player.addCompanion("Ice Golem");
+						vector<string> iceGolemAbilities = { "Freeze Time", "Freeze Radius", "Immune" };
+						Companion iceGolem("Ice Golem", "Golem", iceGolemAbilities);
+						player.addCompanion(iceGolem);
 					}
 					else {
 						cout << "You seal the cave, ensuring the golem remains asleep, and gain the 'Protector of the Forest' title.\n";
