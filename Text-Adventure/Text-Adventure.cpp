@@ -30,12 +30,34 @@ void embarkQuest(const string& school, const Friend& friendChosen);
 
 
 class Player {
+	private:
+		string name;
+		int level;
+		vector<Title> titles;
 	public:
 		string name;
 		vector<Item> inventory; //store invetory
 		vector<Skill> skills; //store skills
 
 		Player(const string& n) : name(n) {}
+		Player(string name, int level) : name(name), level(level) {}
+
+		void addTitle(const Title& newTitle) {
+			titles.push_back(newTitle);
+
+		}
+
+		void displayTitle() const {
+			if (titles.empty()) {
+				cout << "No titles earned" << endl;
+			}
+			else {
+				cout << "Titles earned: " << endl;
+				for (const auto& title : titles) {
+					title.displayTitleInfo();
+				}
+			}
+		}
 
 		void addItem(const Item& item) {
 			
@@ -95,7 +117,7 @@ private:
 	vector<string> bonuses;  //a list of bonuses or effects associated with the title
 
 public:
-	Title(string name, string description, vector<string> bonuses)
+	Title(string name, string description, vector<string> bonuses = {})
 		: name(name), description(description), bonuses(bonuses) {}
 
 	//getters
@@ -1066,8 +1088,9 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				}
 				else {
 					cout << "The spirit remains at the volcano, ensuring it stays dormant, The village is safe, and you gain the 'Guardian of Fire' title.\n";
-					//add title class
-					player.addTitle("Guardian of Fire");
+					Title guardianOfFire("Guardian of Fire", "A title granted to those who protect the village from fiery doom.");
+					player.addTitle(guardianOfFire); 
+					
 				}
 			}
 			else {
@@ -1114,7 +1137,9 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 					}
 					else {
 						cout << "You seal the cave, ensuring the golem remains asleep, and gain the 'Protector of the Forest' title.\n";
-						player.addTitle("Protector of the Forest");
+						Title protectorOfForest("Protector of the Forest", "A title given to those who safeguard the ancient forest."); 
+						player.addTitle(protectorOfForest); 
+
 					}
 				}
 				else {
@@ -1135,7 +1160,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				if (questDecision == 1) {
 					cout << "The elemental guides you to an ancient shrine, where you discover the true source of the dark magic. "
 						<< "You cleanse the shrine, earning the respect of the forest spirits.\n";
-					player.addTitle("Forest Spirits Ally");
+					Title protectorOfForest("Protector of the Forest", "A title given to those who safeguard the ancient forest.");
+					player.addTitle(protectorOfForest);
 				}
 			}
 			else {
@@ -1179,11 +1205,13 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 					if (questDecision == 1) {
 						cout << "You cleanse the altar, banishing the dark magic. The spirits grant tou the 'Grove Protector' title.\n";
-						player.addTitle("Grove Protector");
+						Title groveProtector("Grove Protector", "A title awarded to those who defend the sacred groves.");
+						player.addTitle(groveProtector);
 					}
 					else {
 						cout << "You confront the sorcerer, and after a fierce battle, you defeat them, earning the 'Dark Magic Bane' title.\n";
-						player.addTitle("Dark Magic Bane");
+						Title darkMagicBane("Dark Magic Bane", "A title for those who vanquish practitioners of dark arts.");
+						player.addTitle(darkMagicBane);
 					}
 				}
 				else {
@@ -1203,7 +1231,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				}
 				else {
 					cout << "Destroying the artifact lifts the curse completely, and the grove flourishes once more. The spirits grant you the 'Life Guardian' title.\n";
-					player.addTitle("Life Guardian");
+					Title lifeGuardian("Life Guardian", "A title granted to those who restore life and balance to cursed lands.");
+					player.addTitle(lifeGuardian);
 				}
 			}
 			else {
@@ -1242,7 +1271,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 				if (questDecision == 1) {
 					cout << "Freeing the spirit lifts the curse on the crypt, and the spirit grants you the 'Crypt Guardian' title.\n";
-					player.addTitle("Crypt Guardian");
+					Title cryptGuardian("Crypt Guardian", "A title given to those who protect the resting places of the dead.");
+					player.addTitle(cryptGuardian);
 				}
 				else {
 					cout << "Binding the spirit to your will grants you immense power, but at a cost to your own soul. You gain the 'Soul Binder' skill.\n";
@@ -1266,7 +1296,7 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			}
 			else {
 				cout << "Destroying the relic ends the unrest, and the crypt returns to peace. The spirits grant you the 'Relic Destroyer' title.\n";
-				player.addTitle("Relic Destroyer");
+				
 			}
 		}
 		else {
@@ -1289,7 +1319,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 			if (questDecision == 1) {
 				cout << "You focus your storm magic, gradually calming the winds and waves. The Thunder God grants you the 'Stormbringer' title in recognition of your skill.\n";
-				player.addTitle("Stormbringer");
+				Title stormbringer("Stormbringer", "A title awarded to those who command the powers of the storm.");
+				player.addTitle(stormbringer);
 
 				cout << "However, the storm's energy lingers in the air. Do you:\n";
 				cout << "1. Investigate the source of the storm's power.\n";
@@ -1334,7 +1365,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 			if (questDecision == 1) {
 				cout << "You use your illusion magic to dispel the false paths, revealing the true way forward. The Maze's Guardian grants you the 'Master of Illusions' title.\n";
-				player.addTitle("Master of Illusions");
+				Title masterOfIllusions("Master of Illusions", "A title given to those who master the art of deception and illusion.");
+				player.addTitle(masterOfIllusions);
 
 				cout << "However, the labyrinth's magic still lingers. Do you:\n";
 				cout << "1. Investigate the source of the labyrinth's power.\n";
@@ -1373,13 +1405,15 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				if (questDecision == 1) {
 					cout << "Following your reflection leads you to the heart of the maze, where you uncover a hidden treasure. "
 						<< "You gain the 'Illusion's Gift' title, along with a rare artifact.\n";
-					player.addTitle("Illusion's Gift");
+					Title illusionsGift("Illusion's Gift", "A title granted to those who uncover hidden truths through illusion.");
+					player.addTitle(illusionsGift);
 					Item illusionArtifact(1, "Illusion Artifact", "An artifact that enhances your illusion magic.");
 					addItemToInventory(illusionArtifact);
 				}
 				else {
 					cout << "Dispel the illusion and find the true path, leading you out of the maze. The Guardian grants you the 'Maze Master' title.\n";
-					player.addTitle("Maze Master");
+					Title mazeMaster("Maze Master", "A title for those who navigate and conquer labyrinths of the mind.");
+					player.addTitle(mazeMaster);
 				}
 			}
 			else {
@@ -1421,7 +1455,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 
 					if (questDecision == 1) {
 						cout << "You defeat the elementals, earning the title 'Flame Protector' and the respect of the phoenix.\n";
-						player.addTitle("Flame Protector");
+						Title flameProtector("Flame Protector", "A title awarded to those who defend against the wrath of fire.");
+						player.addTitle(flameProtector);
 					}
 					else {
 						cout << "You form an alliance with the elementals, gaining their support in future battles. The phoenix grants you the 'Elemental Ally' skill.\n";
@@ -1447,7 +1482,8 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				else {
 					cout << "You engage in a fierce battle with the phoenix, ultimately proving your strength. "
 						<< "The phoenix grants you the 'Phoenix Slayer' title, but at the cost of its life.\n";
-					player.addTitle("Phoenix Slayer");
+					Title phoenixSlayer("Phoenix Slayer", "A title given to those who slay the legendary phoenix.");
+					player.addTitle(phoenixSlayer);
 				}
 			}
 			else {
