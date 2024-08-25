@@ -88,6 +88,88 @@ class Player {
 		}
 };
 
+class Title {
+private:
+	string name;
+	string description;
+	vector<string> bonuses;  //a list of bonuses or effects associated with the title
+
+public:
+	Title(string name, string description, vector<string> bonuses)
+		: name(name), description(description), bonuses(bonuses) {}
+
+	//getters
+	string getName() const {
+		return name;
+	}
+	string getDescription() const {
+		return description;
+	}
+	vector<string> getBonuses() const {
+		return bonuses;
+	}
+
+	// method to display title information
+	void displayTitleInfo() const {
+		cout << "Title: " << name << endl;
+		cout << "Description: " << description << endl;
+		cout << "Bonuses: " << endl;
+		for (const auto& bonus : bonuses) {
+			cout << " - " << bonus << endl;
+		}
+	}
+};
+
+class Companion {
+private:
+	string name;
+	string school;  //school of magic or specialization
+	int loyalty;    //level of loyalty or bond with the player
+	vector<string> abilities;  //abilities or skills the companion brings
+
+public:
+	// Constructor
+	Companion(string name, string school, int loyalty, vector<string> abilities)
+		: name(name), school(school), loyalty(loyalty), abilities(abilities) {}
+
+	// Getters
+	string getName() const {
+		return name;
+	}
+
+	string getSchool() const {
+		return school;
+	}
+
+	int getLoyalty() const {
+		return loyalty;
+	}
+
+	vector<string> getAbilities() const {
+		return abilities;
+	}
+
+	// Setters
+	void increaseLoyalty(int amount) {
+		loyalty += amount;
+	}
+
+	void decreaseLoyalty(int amount) {
+		loyalty = max(0, loyalty - amount);  //loyalty cannot go below 0
+	}
+
+	// method to display companion information
+	void displayCompanionInfo() const {
+		cout << "Companion: " << name << endl;
+		cout << "School: " << school << endl;
+		cout << "Loyalty: " << loyalty << endl;
+		cout << "Abilities: " << endl;
+		for (const auto& ability : abilities) {
+			cout << " - " << ability << endl;
+		}
+	}
+};
+
 class Skill {
 	public:
 		string name;
@@ -1129,7 +1211,6 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 				return;
 				}
 			}
-		}
 	else if (school == "Death") {
 		cout << "The Haunted Crypt" << endl;
 		cout << "   The ancient crypt looms before you, its entrance guarded by restless spirits. The air is thick with the scent of decay, and the whispers of the dead "
@@ -1238,7 +1319,7 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 					cout << "You return to the village, but the storm's power remains a lingering threat.\n";
 				}
 			}
-	}
+		}
 		else if (school == "Illusion") {
 			cout << "The Maze of Mirrors" << endl;
 			cout << "The labyrinth is a disorienting place of shifting reflections and illusions. You and " << friendChosen.name
@@ -1251,31 +1332,128 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			cin >> questDecision;
 			cin.ignore();
 
+			if (questDecision == 1) {
+				cout << "You use your illusion magic to dispel the false paths, revealing the true way forward. The Maze's Guardian grants you the 'Master of Illusions' title.\n";
+				player.addTitle("Master of Illusions");
+
+				cout << "However, the labyrinth's magic still lingers. Do you:\n";
+				cout << "1. Investigate the source of the labyrinth's power.\n";
+				cout << "2. Leave the maze and return to the village.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "You find a hidden chamber at the center of the maze, where the source of the illusions resides. Do you:\n";
+					cout << "1. Absorb its power to enhance your illusion magic.\n";
+					cout << "2. Destroy the source to prevent others from falling into the maze's trap.\n";
+					cin >> questDecision;
+					cin.ignore();
+
+					if (questDecision == 1) {
+						cout << "Absorbing the power of the maze grants you the 'Illusion Weaver' skill, allowing you to create powerful illusions at will.\n";
+						player.addSkill("Illusion Weaver");
+					}
+					else {
+						cout << "Destroying the source dissolves the maze, freeing those trapped within. The spirits of the maze grant you a Mirror Shard as a token of their gratitude.\n";
+						Item mirrorShard(1, "Mirror Shard", "A shard from the Maze of Mirrors that enhances illusion magic.");
+						addItemToInventory(mirrorShard);
+					}
+				}
+				else {
+					cout << "You return to the village, but the maze's magic remains a threat to unwary travelers.\n";
+				}
+			}
+			else if (questDecision == 2) {
+				cout << "You follow the echoes of your reflection, leading you deeper into the labyrinth. Do you:\n";
+				cout << "1. Trust your reflection and follow it further.\n";
+				cout << "2. Dispel the illusion and reveal the true path.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "Following your reflection leads you to the heart of the maze, where you uncover a hidden treasure. "
+						<< "You gain the 'Illusion's Gift' title, along with a rare artifact.\n";
+					player.addTitle("Illusion's Gift");
+					Item illusionArtifact(1, "Illusion Artifact", "An artifact that enhances your illusion magic.");
+					addItemToInventory(illusionArtifact);
+				}
+				else {
+					cout << "Dispel the illusion and find the true path, leading you out of the maze. The Guardian grants you the 'Maze Master' title.\n";
+					player.addTitle("Maze Master");
+				}
+			}
+			else {
+				cout << "You decide to retreat and plan your next move. Back at the dorm, you prepare for another day.\n";
+				return;
+			}
 		}
 	else if (questChoice == 2) {
 		if (school == "Fire") {
 			cout << "The Phoenix's Rebirth" << endl;
-			cout << "   Deep within the heart of a fiery canyon, the legendary phoenix is said to reside. The air is thick with the scent of sulfur, and the ground is scorched. "
-				<< "You and " << friendChosen.name << " journey to find the phoenix, hoping to gain its trust and learn the secrets of eternal flame. "
-				<< "The path is treacherous, but the rewards could be unimaginable." << endl;
+			cout << "The legendary phoenix has been sighted in the mountains, its fiery plumage illuminating the skies. "
+				<< "You and " << friendChosen.name << " set out to find the creature and gain its trust. "
+				<< "The journey is treacherous, with volcanic eruptions and dangerous wildlife threatening your progress." << endl;
 
-			 cout << "1. Approach the Phoenix and attempt to bond with it.\n";
-            cout << "2. Search the canyon for ancient scrolls containing fire magic secrets.\n";
-            cout << "3. Return to the school dorm to rest and reconsider your strategy.\n";
-            cout << "What do you choose to do? (1, 2, or 3): ";
-            cin >> questDecision;
-            cin.ignore();
+			cout << "1. Use your fire magic to calm the phoenix.\n";
+			cout << "2. Attempt to capture the phoenix using a magical trap.\n";
+			cout << "3. Retreat to the school dorm and prepare for another attempt. \n";
+			cout << "What do you choose to do? (1, 2, or 3): ";
+			cin >> questDecision;
+			cin.ignore();
 
-            if (questDecision == 1) {
-                cout << "The Phoenix accepts your bond, and in return, grants you the skill 'Phoenix's Blessing.'\n";
-                player.addSkill("Phoenix's Blessing");
-            } else if (questDecision == 2) {
-                cout << "You find an ancient scroll and learn a new spell: 'Flame Burst.'\n";
-                player.addSkill("Flame Burst");
-            } else if (questDecision == 3) {
-                cout << "You decide to retreat and rest. Back at the dorm, you prepare for another day.\n";
-                return;
-            }
+			if (questDecision == 1) {
+				cout << "You successfully calm the phoenix, gaining its trust. It grants you a feather that enhances your fire magic.\n";
+				Item phoenixFeather(1, "Phoenix Feather", "A feather from the legendary phoenix.");
+				addItemToInventory(phoenixFeather);
+
+				cout << "However, the phoenix warns you of a greater threat in the mountains. Do you:\n";
+				cout << "1. Investigate the threat.\n";
+				cout << "2. Return to the village and report your success.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "You discover a hidden lair of fire elementals causing havoc in the mountains. Do you:\n";
+					cout << "1. Defeat the elementals and restore peace.\n";
+					cout << "2. Negotiate with the elementals to form an alliance.\n";
+					cin >> questDecision;
+					cin.ignore();
+
+					if (questDecision == 1) {
+						cout << "You defeat the elementals, earning the title 'Flame Protector' and the respect of the phoenix.\n";
+						player.addTitle("Flame Protector");
+					}
+					else {
+						cout << "You form an alliance with the elementals, gaining their support in future battles. The phoenix grants you the 'Elemental Ally' skill.\n";
+						player.addSkill("Elemental Ally");
+					}
+				}
+				else {
+					cout << "You return to the village, but the mountains remain a dangerous place.\n";
+				}
+			}
+			else if (questDecision == 2) {
+				cout << "You attempt to capture the phoenix, but it breaks free, enraged. You must decide how to respond:\n";
+				cout << "1. Apologize and try to calm the phoenix.\n";
+				cout << "2. Engage the phoenix in battle.\n";
+				cin >> questDecision;
+				cin.ignore();
+
+				if (questDecision == 1) {
+					cout << "Your apology soothes the phoenix, and it grants you a single feather as a sign of forgiveness. "
+						<< "You gain the 'Phoenix's Favor' skill, enhancing your fire magic.\n";
+					player.addSkill("Phoenix's Favor");
+				}
+				else {
+					cout << "You engage in a fierce battle with the phoenix, ultimately proving your strength. "
+						<< "The phoenix grants you the 'Phoenix Slayer' title, but at the cost of its life.\n";
+					player.addTitle("Phoenix Slayer");
+				}
+			}
+			else {
+				cout << "You decide to retreat and plan your next move. Back at the dorm, you prepare for another day.\n";
+				return;
+			}
 
 		}
 		else if (school == "Ice") {
@@ -1314,23 +1492,36 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			cout << "You have purified the Great Forest Guardian. What would you like to do next?" << endl;
 			cout << "1. Learn a new skill: 'Guardian's Blessing' - Grants increased protection from natural elements." << endl;
 			cout << "2. Receive an item: 'Mystic Bark' - A piece of the Guardian's bark with magical properties." << endl;
-			cout << "3. Return to your dorm." << endl;
+			cout << "3. Request a boon from the Guardian: 'Forest's Favor' - A temporary blessing from the Guardian." << endl;
+			cout << "4. Return to your dorm." << endl;
+			cout << "What do you choose to do? (1, 2, 3, or 4): ";
 
-			int choice;
-			cin >> choice;
+			int questDecision;
+			cin >> questDecision;
+			cin.ignore();
 
-			if (choice == 1) {
+			if (questDecision == 1) {
+				cout << "You choose to learn 'Guardian's Blessing'. This skill enhances your protection against natural elements, such as weather and environmental hazards. "
+					<< "However, the constant connection to the natural world may occasionally distract you from other tasks.\n";
 				player.addSkill("Guardian's Blessing");
 			}
-			else if (choice == 2) {
+			else if (questDecision == 2) {
+				cout << "You receive the 'Mystic Bark'. This item has magical properties that can be used in various potions or rituals. "
+					<< "It may also have a unique effect when combined with other natural ingredients. Be cautious, as its power is unpredictable.\n";
 				Item mysticBark(1, "Mystic Bark", "A piece of magical bark from the Great Forest Guardian.");
 				addItemToInventory(mysticBark);
 			}
-			else if (choice == 3) {
-				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
+			else if (questDecision == 3) {
+				cout << "You request a boon from the Guardian. The Guardian grants you the 'Forest's Favor', a temporary blessing that enhances your connection to nature. "
+					<< "This boon can help you in future encounters with nature-based challenges but may draw the attention of other forest entities.\n";
+				cout << "The Forest's Favor effect: Increases your ability to communicate with animals, find hidden paths, and sense environmental changes for a limited time.\n";
+				player.addSkill("Forest's Favor");
+			}
+			else if (questDecision == 4) {
+				cout << "You return to your dorm to rest and reflect on your adventure. The Guardian's spirit has been restored, and the forest breathes a sigh of relief.\n";
 			}
 			else {
-				cout << "Invalid choice. Returning to your dorm." << endl;
+				cout << "Invalid choice. Returning to your dorm.\n";
 			}
 
 		}
@@ -1345,17 +1536,23 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			cout << "2. Receive an item: 'Grim Cloak' - A cloak that offers protection against dark magic." << endl;
 			cout << "3. Return to your dorm." << endl;
 
-			int choice;
-			cin >> choice;
+			int questDecision;
+			cin >> questDecision;
+			cin.ignore();
 
-			if (choice == 1) {
+			if (questDecision == 1) {
+				cout << "You choose to learn 'Death's Touch'. You gain new necromantic abilities, but they come with a cost. The more you use these powers, "
+					<< "the more you feel your own vitality drain. You gain the skill, but must manage its power carefully.\n";
+
 				player.addSkill("Death's Touch");
 			}
-			else if (choice == 2) {
+			else if (questDecision == 2) {
+				cout << "You receive the 'Grim Cloak'. This cloak protects you from dark magic, but it also has a haunting aura. "
+					<< "While it offers protection, it may attract unwanted attention from dark entities.\n";
 				Item grimCloak(1, "Grim Cloak", "A cloak that shields the wearer from dark forces.");
 				addItemToInventory(grimCloak);
 			}
-			else if (choice == 3) {
+			else if (questDecision == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
 			}
 			else {
@@ -1374,17 +1571,22 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			cout << "2. Receive an item: 'Storm Amulet' - An amulet that protects against electrical attacks." << endl;
 			cout << "3. Return to your dorm." << endl;
 
-			int choice;
-			cin >> choice;
+			int questDecision;
+			cin >> questDecision;
+			cin.ignore();
 
-			if (choice == 1) {
+			if (questDecision == 1) {
+				cout << "You choose to learn 'Thunder Strike'. This powerful spell enhances your ability to wield lightning. However, using it recklessly "
+					<< "can cause harm to those around you. Practice caution and mastery to wield its full potential.\n";
 				player.addSkill("Thunder Strike");
 			}
-			else if (choice == 2) {
+			else if (questDecision == 2) {
+				cout << "You receive the 'Storm Amulet'. This amulet provides protection against electrical attacks, but it also makes you more susceptible to other forms of magic. "
+					<< "It’s a valuable item for storm magic users, but be aware of its limitations.\n";
 				Item stormAmulet(1, "Storm Amulet", "An amulet that offers protection from lightning.");
 				addItemToInventory(stormAmulet);
 			}
-			else if (choice == 3) {
+			else if (questDecision == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
 			}
 			else {
@@ -1403,17 +1605,22 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			cout << "2. Receive an item: 'Mask of the Phantom' - A mask that enhances your illusion magic." << endl;
 			cout << "3. Return to your dorm." << endl;
 
-			int choice;
-			cin >> choice;
+			int questDecision;
+			cin >> questDecision;
+			cin.ignore();
 
-			if (choice == 1) {
+			if (questDecision == 1) {
+				cout << "You choose to learn 'Veil of Shadows'. This spell allows you to become invisible for a short period, ideal for stealth and escape. "
+					<< "However, using it extensively may leave you disoriented and vulnerable when the spell ends.\n";
 				player.addSkill("Veil of Shadows");
 			}
-			else if (choice == 2) {
+			else if (questDecision == 2) {
+				cout << "You receive the 'Mask of the Phantom'. This mask boosts your illusion magic but also makes you more susceptible to mental manipulation. "
+					<< "Use it wisely to enhance your illusions, but be wary of its potential drawbacks.\n";
 				Item maskPhantom(1, "Mask of the Phantom", "A mask that boosts your illusionary abilities.");
 				addItemToInventory(maskPhantom);
 			}
-			else if (choice == 3) {
+			else if (questDecision == 3) {
 				cout << "You return to your dorm to rest and reflect on your adventure." << endl;
 			}
 			else {
