@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -24,6 +26,56 @@ void exploreIllusionFaction1();
 void exploreIllusionFaction2();
 void exploreIllusionFaction3();
 
+class Relationship {
+	public:
+		string friendName;
+		int affectionPoints; //determines hwo strong the relationship is
+
+		Relationship(const string& name, int affection = 0) : friendName(name) , affectionPoints(affection) {}
+
+		void increaseAffection(int points) {
+			affectionPoints += points;
+			cout << friendName << "'s affection increased by " << points << " points." << endl;
+		}
+		void decreaseAffection(int points) {
+			affectionPoints -= points;
+			cout << friendName << "'s affection decreased by " << points << " points." << endl;
+		}
+		
+		int getAffectionLevel() const {
+			return affectionPoints;
+		}
+};
+
+class School {
+	public:
+		string name;
+		map<string, int> memberPoints;
+
+		School(string schoolName) : name(schoolName) {}
+
+		void addMember(const string& wizardName, int points) {
+			memberPoints[wizardName] = 0;
+		}
+		void updatePoints(const string& wizardName, int points) {
+			if (memberPoints.find(wizardName) != memberPoints.end()) {
+				memberPoints[wizardName] += points;
+			}
+		}
+
+		void showRankings() const {
+			vector<pair<string, int>> rankings(memberPoints.begin(), memberPoints.end());
+			sort(rankings.begin(), rankings.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+				return b.second < a.second; // Sort by points in descending order
+
+				});
+
+			cout << "Rankings for the " << name << " School: " << endl;
+			for (size_t i = 0; i < rankings.size(); ++i) {
+				cout << i + 1 << ". " << rankings[i].first << " - " << rankings[i].second << " points" << endl;
+			}
+		}
+};
 
 class Title {
 private:
@@ -64,11 +116,11 @@ private:
 	vector<string> abilities;  //abilities or skills the companion brings
 
 public:
-	// Constructor
+	// constructor
 	Companion(string name, string type, vector<string> abilities)
 		: name(name), type(type), abilities(abilities) {}
 
-	// Getters
+	// getters
 	string getName() const {
 		return name;
 	}
@@ -936,7 +988,7 @@ void learnMagic(const string& school, Player& player) {
 	//making friends process
 	vector<Friend> potentialFriends;
 	if (school == "Fire") {
-		potentialFriends = { {"Blaze, Pyromancer"}, {"Ember", "Fire Dancer"}, {"Flare", "Inferno Specialist"}};
+		potentialFriends = { {"Blaze, Pyromancer",}, {"Ember", "Fire Dancer"}, {"Flare", "Inferno Specialist", }};
 	} else if (school == "Ice") {
 		potentialFriends = { {"Frost", "Cyromancer"}, {"Glaze","Ice Sculptor"},{"Chill","Blizzard Conjurer"}};
 	} else if (school == "Life") {
@@ -1173,10 +1225,6 @@ void embarkQuest(const string& school, const Friend& friendChosen, Player& playe
 			else {
 				cout << "You return to the village, content with your victory, but the source of the dark magic remains hidden.\n";
 			}
-		}
-		else if (questDecision == 3) {
-			cout << "You decide to retreat and gather more supplies. Back at the dorm, you prepare for another day. \n";
-			return;
 		}
 		else if (school == "Life") {
 			cout << "The Enchanted Grove" << endl;
