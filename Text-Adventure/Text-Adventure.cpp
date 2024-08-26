@@ -156,7 +156,8 @@ public:
 	Faction(const string& schoolName, const string& name) : school(schoolName), factionName(name) {}
 
 	void explore() {
-		cout << "You are exploring the " << school  << "Faction of the " << factionName << "." << endl;
+		cout << "You are exploring the " << school  << " Faction of the " << factionName << "." << endl;
+		cout << "What would you like to study?: " << endl;
 
 		if (school == "Fire" && factionName == "Inferno Knights") {
 			cout << "1. Spellcasting - train with molten magic." << endl;
@@ -254,7 +255,7 @@ public:
 
 		switch (choice) {
 			case 1:
-				cout << "You engage in spellcasting activities relate to the " << factionName << "!" << endl;
+				cout << "You engage in spellcasting activities related to the " << factionName << "!" << endl;
 				break;
 			case 2:
 				cout << "You interact with magical creatures related to the " << factionName << "!" << endl;
@@ -269,6 +270,8 @@ public:
 	}
 };
 
+
+
 class Player {
 	private:
 		int level;
@@ -279,13 +282,19 @@ class Player {
 		School* school;
 		int points;
 		vector<Relationship>relationships;
-		vector<Item> inventory; //store invetory
+		vector<string> inventory; //store invetory
 		vector<Skill> skills; //store skills
 
-		Player(const string& n) : name(n) {}
 		Player(string name, int level) : name(name), level(level) {}
 		Player(string playerName, School* playerSchool) : name(playerName), school(playerSchool), points(0) {
 			school->addMember(name, 0);
+		}
+		Player(const string& playerName) : name(playerName) {
+			//initialize default items
+			inventory.push_back("Wand");
+			inventory.push_back("Spellbook");
+			inventory.push_back("Health Potion");
+
 		}
 		void completeQuest(int questPoints) {
 			points += questPoints;
@@ -367,19 +376,19 @@ class Player {
 		}
 	}
 
-	void addItem(const Item& item) {
-
-		cout << "Item added: " << item.name << " - " << item.description << endl;
+	void addItem(const string& item) {
+		inventory.push_back(item);
+		cout << item << " added to your inventory." << endl;
 	}
 
-	void showInventory() const {
+	void checkInventory() const {
 		if (inventory.empty()) {
-			cout << "your inventory is empty." << endl;
+			cout << "Your inventory is empty." << endl;
 			return;
 		}
 		cout << "Your inventory:" << endl;
-		for (const auto& item : inventory) {
-			cout << "- " << item.name << ": " << item.description << endl;
+		for (const string& item : inventory) {
+			cout << "- " << item << endl;
 		}
 	}
 	void addSkill(const string& skillName) {
@@ -415,6 +424,68 @@ class Player {
 		for (const Skill& skill : skills) {
 			cout << "- " << skill.name << ": " << skill.description << endl;
 		}
+	}
+	string getName() const { return name; }
+};
+
+class Dorm {
+private:
+	Player& player;
+	string school;
+	string faction;
+public:
+	Dorm(Player& p, const string& schoolName, const string& factionName) : player(p), school(schoolName), faction(factionName) {}
+
+	void enter() {
+		int choice;
+		do {
+			cout << "Welcome to your dorm, " << player.getName() << "." << endl;
+			cout << "What would you like to do?" << endl;
+			cout << "1. Check Inventory" << endl;
+			cout << "2. Talk to Dorm Mates" << endl;
+			cout << "3. Check School/ Faction Rankings" << endl;
+			cout << "4. Learn (Gain new spells or knowledge)" << endl;
+			cout << "5. Quit School" << endl;
+
+			cin >> choice;
+
+			switch (choice) {
+			case 1:
+				player.checkInventory();
+				break;
+			case 2:
+				talkToDormMates();
+				break;
+			case 3:
+				checkRankings();
+				break;
+			case 4:
+				learn();
+				break;
+			case 5:
+				quitSchool();
+				return;
+			default:
+				cout << "Invalid choice. Please choose again." << endl;
+				break;
+			}
+		} while (choice != 6 && choice != 4);
+	}
+	void talkToDormMates() const {
+
+	}
+	void checkRankings() const {
+		cout << "Checking the current rankings for your school and faction..." << endl;
+		cout << "School of " << school << ": Ranked #1 in elemental mastery." << endl;
+		cout << "Faction of " << faction << ": Holding the top spot in the inter-faction tournament!" << endl;
+	}
+
+	void quitSchool() const {
+		cout << "You have chosen to quit the school. Your journey ends here." << endl;
+		exit(0);
+	}
+	void learn() {
+
 	}
 };
 
@@ -551,34 +622,8 @@ int main() {
 		Faction selectedFaction(school, faction);
 		selectedFaction.explore();
 
-
-		cout << "Would youl like to learn magic, " << playerName << "? (1 for Yes, 0 for No)" << endl;
-		int learnChoice;
-		cin >> learnChoice;
-		cin.ignore();
-
-		if (learnChoice == 1) {
-			learnMagic(school, player);
-		}
-
-		cout << "Would you like to embark on a quest, " << playerName << "? (1 for Yes, 0 for No)" << endl;
-		int questChoice;
-		cin >> questChoice;
-		cin.ignore();
-
-		if (questChoice == 1) {
-			Friend defaultFriend;
-			defaultFriend.name = "Bob";
-			defaultFriend.specialty = "None";
-			embarkQuest(school, defaultFriend, player);
-		}
-
-		cout << "Would you like to view your inventory, " << playerName << "? (1 for Yes, 0 for No)" << endl;
-		int inventoryChoice;
-		cin >> inventoryChoice;
-		if (inventoryChoice == 1) {
-			player.showInventory();
-		}
+		Dorm dorm(player, school, faction);
+		dorm.enter();
 
 		cout << "Do you want to play again? (y/n): ";
 		cin >> playAgain;
