@@ -2,14 +2,17 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <ctime>
+#include <cstdlib>
 #include <algorithm>
+
 
 using namespace std;
 
 class Relationship {
 	public:
 		string friendName;
-		int affectionPoints; //determines how strong the relationship is
+		mutable int affectionPoints; //determines how strong the relationship is
 
 		Relationship(const string& name, int affection = 0) : friendName(name) , affectionPoints(affection) {}
 
@@ -27,19 +30,32 @@ class Relationship {
 		}
 };
 
-class School {
+class Member {
 	public:
 		string name;
+		int affectionPoints;
+
+		Member(const string& memberName) : name(memberName), affectionPoints(0) {}
+};
+
+class School {
+	
+	public:
+		string name;
+		vector<Member> members;
 		map<string, int> memberPoints;
 
-		School(string schoolName) : name(schoolName) {}
+		
+		// School(string schoolName) : name(schoolName) {} 
+		School(const string& schoolName) : name(schoolName) {}
 
-		void addMember(const string& wizardName, int points) {
-			memberPoints[wizardName] = points;
+		void addMember(const string& memberName, int points) {
+			members.emplace_back(memberName);
+			memberPoints[memberName] = points;
 		}
-		void updatePoints(const string& wizardName, int points) {
-			if (memberPoints.find(wizardName) != memberPoints.end()) {
-				memberPoints[wizardName] += points;
+		void updatePoints(const string& memberName, int points) {
+			if (memberPoints.find(memberName) != memberPoints.end()) {
+				memberPoints[memberName] += points;
 			}
 		}
 
@@ -85,41 +101,6 @@ public:
 		cout << "Bonuses: " << endl;
 		for (const auto& bonus : bonuses) {
 			cout << " - " << bonus << endl;
-		}
-	}
-};
-
-class Companion {
-private:
-	string name;
-	string type;  //type of companion
-	vector<string> abilities;  //abilities or skills the companion brings
-
-public:
-	// constructor
-	Companion(string name, string type, vector<string> abilities)
-		: name(name), type(type), abilities(abilities) {}
-
-	// getters
-	string getName() const {
-		return name;
-	}
-
-	string getType() const {
-		return type;
-	}
-
-	vector<string> getAbilities() const {
-		return abilities;
-	}
-
-	// method to display companion information
-	void displayCompanionInfo() const {
-		cout << "Companion: " << name << endl;
-		cout << "Type: " << type << endl;
-		cout << "Abilities: " << endl;
-		for (const auto& ability : abilities) {
-			cout << " - " << ability << endl;
 		}
 	}
 };
@@ -268,9 +249,7 @@ public:
 
 class Player {
 	private:
-		int level;
 		vector<Title> titles; //titles earned by player
-		vector<Companion> companions; //companions acquired by player
 	public:
 		string name; 
 		School* school;
@@ -279,7 +258,7 @@ class Player {
 		vector<string> inventory; //store invetory
 		vector<Skill> skills; //store skills
 
-		Player(string name, int level) : name(name), level(level) {}
+		
 		Player(string playerName, School* playerSchool) : name(playerName), school(playerSchool), points(0) {
 			school->addMember(name, 0);
 		}
@@ -334,23 +313,6 @@ class Player {
 				cout << rel.friendName << " - Affection: " << rel.affectionPoints << endl;
 			}
 		}
-
-	void addCompanion(const Companion& newCompanion) {
-		companions.push_back(newCompanion);
-		cout << "you have gained a new companion: " << newCompanion.getName() << endl;
-	}
-
-	void displayCompanions() const {
-		if (companions.empty()) {
-			cout << "No companions acquired." << endl;
-		}
-		else {
-			cout << "Companions: " << endl;
-			for (const auto& companion : companions) {
-				companion.displayCompanionInfo();
-			}
-		}
-	}
 
 	void addTitle(const Title& newTitle) {
 		titles.push_back(newTitle);
@@ -425,11 +387,14 @@ class Player {
 class Dorm {
 	private:
 		Player& player;
-		School& school;
 		string faction;
+		map<string, Relationship> relationships;
 	public:
-		Dorm(Player& p, School& associatedSchool, const string& factionName) : player(p), school(associatedSchool), faction(factionName) {}
+		School& school;
+		vector<Member*> friends;
 
+		Dorm(Player& p, School& associatedSchool, const string& factionName) : player(p), school(associatedSchool), faction(factionName) {}
+	
 	void enter() {
 		int choice;
 		do {
@@ -448,7 +413,7 @@ class Dorm {
 				player.checkInventory();
 				break;
 			case 2:
-				talkToDormMates();
+				exploreDormHalls();
 				break;
 			case 3:
 				checkRankings();
@@ -465,8 +430,58 @@ class Dorm {
 			}
 		} while (choice != 6 && choice != 4);
 	}
-	void talkToDormMates() const {
+	void exploreDormHalls() {
 		//implement talk to dorm mates 
+
+		if (school.members.size() < 2) {
+			cout << "Not enough members to explore the dorm halls." << endl;
+			return;
+		}
+
+		//randomly select two members from the same school
+		srand(static_cast<unsigned int>(time(nullptr)));
+		int index1 = rand() % school.members.size();
+		int index2;
+		do {
+			index2 = rand() % school.members.size();
+		} while (index1 == index2);
+
+		const Member& member1 = school.members[index1];
+		const Member& member2 = school.members[index2];
+
+		cout << "As you wander through the dorm halls, you come across " << member1.name << " and " << member2.name << " having a conversation: " << endl;
+
+		cout << member1.name << ": 'I heard there's a new spell that's incredibly powerful. Have you tried it?'" << endl;
+		cout << member2.name << ": 'Not yet. I've been focused on perfecting my potion-making skills. But maybe I should give it a try.'" << endl;
+		cout << member1.name << ": 'You should! It could really boost your abilities.'" << endl;
+
+		cout << "What would you like to do?" << endl;
+		cout << "1. Ask " << member1.name << " about the new spell." << endl;
+		cout << "2. Offer to help " << member2.name << "with potion-making." << endl;
+		cout << "3. Continue exploring the dorm halls." << endl;
+
+		int choice;
+		cin >> choice;
+
+		switch (choice) {
+			case 1:
+				cout << "You approach " << member1.name << " and ask about the new spell." << endl;
+				cout << member1.name << " explains that its a spell that can enhance magical abilities but requires special ingredients to cast." << endl;
+				// increaseAffection(member1.name, 10); 
+				break;
+			case 2:
+				cout << "You offer to help " << member2.name << "with potion-making." << endl;
+				cout << member2.name << "gratefully accepts and you spend some time working together, learning about potion recipes and brewing techniques." << endl;
+				// increaseAffection(member2.name, 15);
+				break;
+			case 3:
+				cout << "You decide to continue exploring the dorm halls." << endl;
+				//continueExploreDormHalls
+				break;
+			default:
+				cout << "Invalid choice. You decide to continue exploring the dorm halls." << endl;
+				break;
+		}
 	}
 	void checkRankings() const {
 		school.showRankings();
@@ -479,6 +494,13 @@ class Dorm {
 	void learn() {
 		// new learn class will be here
 	}
+// private:
+	// void increaseAffection(const string& memberName, int points) {
+		// if (relationships.find(memberName) == relationships.end()) {
+			// relationships[memberName] = Relationship(memberName);
+		// }
+		// relationships[memberName].increaseAffection(points);
+	// }
 };
 
 int main() {
