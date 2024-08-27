@@ -73,7 +73,6 @@ class Member {
 		int affectionPoints;
 
 		Member(const string& memberName) : name(memberName), affectionPoints(0) {}
-		Member(string n) : name(n) {}
 };
 
 class School {
@@ -108,6 +107,10 @@ class School {
 			for (size_t i = 0; i < rankings.size(); ++i) {
 				cout << i + 1 << ". " << rankings[i].first << " - " << rankings[i].second << " points" << endl;
 			}
+		}
+
+		string getName() const {
+			return name;
 		}
 };
 
@@ -294,7 +297,7 @@ class Player {
 		int points;
 		vector<Relationship>relationships;
 		vector<string> inventory; //store invetory
-		vector<Skill> skills; //store skills
+		vector<string> learnedClasses;
 
 		
 		Player(string playerName, School* playerSchool) : name(playerName), school(playerSchool), points(0) {
@@ -307,10 +310,17 @@ class Player {
 			inventory.push_back("Health Potion");
 
 		}
-		void completeQuest(int questPoints) {
-			points += questPoints;
-			school->updatePoints(name, questPoints);
-			cout << name << " has completed a quest and earned " << questPoints << " points!" << endl;
+
+		void learnSpell(const string& spell) {
+			cout << "You have learned the spell: " << spell << "!" << endl;
+		}
+
+		void addLearnedClass(const string& className) {
+			learnedClasses.push_back(className);
+		}
+
+		bool hasLearnedClass(const string& className) const {
+			return find(learnedClasses.begin(), learnedClasses.end(), className) != learnedClasses.end();
 		}
 
 		void addRelationship(const string& friendName) {
@@ -385,41 +395,79 @@ class Player {
 			cout << "- " << item << endl;
 		}
 	}
-	void addSkill(const string& skillName) {
-		//check if the skill exists
-		for (const Skill& skill : skills) {
-			if (skill.name == skillName) {
-				cout << "You already have the skill: " << skillName << ".\n";
-				return;
-			}
-		}
-		//add skills
-		string skillDescription; //description for skill
-		if (skillName == "Fire Mastery") {
-			skillDescription = "Enhances your control over fire magic.";
-		}
-		else if (skillName == "Cold Resistance") {
-			skillDescription = "Increases your resistance to cold environments and ice magic.";
-		}
-		else if (skillName == "Phoenix's Blessing") {
-			skillDescription = "Grants you the ability to regenerate health faster.";
-		}
-		else if (skillName == "Flame Burst") {
-			skillDescription = "A powerful fire spire spell that creates an explosion of flames.";
-		}
-		else if (skillName == "Dragon's Protection") {
-			skillDescription = "Grants increased defence and resistance to dragon-related attacks.";
-		}
-		skills.push_back(Skill(skillName, skillDescription));
-		cout << "You have learned a new skill: " << skillName << ".\n";
-	}
-	void showSkills()const {
-		cout << "Skills:\n";
-		for (const Skill& skill : skills) {
-			cout << "- " << skill.name << ": " << skill.description << endl;
-		}
-	}
+	
 	string getName() const { return name; }
+};
+
+class LearnMagic {
+private:
+	Player& player;
+	map<string, vector<string>> availableClasses;
+	SpellList& spellList;
+
+public:
+	LearnMagic(Player& p, SpellList& spellList, const string& school, const string& faction) : player(p), spellList(spellList) {
+		initializeClasses(school, faction);
+	}
+
+	void initializeClasses(const string& school, const string& faction) {
+		if (school == "Fire School") {
+			availableClasses["Basic Fireball"] = { "Practice casting small fireballs." };
+			availableClasses["Advanced Pyromancy"] = { "Successfully cast a fireball in combat." };
+		}
+		else if (school == "Ice School") {
+			availableClasses["Water Manipulation"] = { "Gather water from the Mystic Lake.", "Demonstrate water shaping techniques." };
+			availableClasses["Ice Magic"] = { "Collect ice shards from the Frozen Tundra.","Defeat an Ice Elemental." };
+		}
+	}
+
+	void attendClass(const string& className) {
+		if (player.hasLearnedClass(className)) {
+			cout << "You have already attended the " << className << " class." << endl;
+			return;
+		}
+		if (availableClasses.find(className) == availableClasses.end()) {
+			cout << "Class not available." << endl;
+			return;
+		}
+		cout << "You have chosen to attend the " << className << " class." << endl;
+		for (const auto& task : availableClasses[className]) {
+			cout << "Task: " << task << endl;
+			//task here
+			cout << "Task completed!" << endl;
+
+
+		}
+
+		cout << "Congratulations! You have completed the " << className << " class." << endl;
+		player.learnSpell(className);
+		player.addLearnedClass(className);
+	}
+
+	void listAvailableClasses() const {
+		cout << "Available classes:" << endl;
+		for (const auto& classPair : availableClasses) {
+			cout << "- " << classPair.first << endl;
+		}
+	}
+
+	void learnNewSpell() {
+		string spellName, description;
+		int power;
+
+		cout << "Enter the name of the new spell: ";
+		cin.ignore();
+		getline(cin, spellName);
+
+		cout << "Enter a description for the spell: ";
+		getline(cin, description);
+
+		cout << "Enter the power level of the spell: ";
+		cin >> power;
+
+		spellList.addSpell(Spell(spellName, description, power));
+		cout << "You have successfully learned the spell " << spellName << "!" << endl;
+	}
 };
 
 class Dorm {
@@ -428,12 +476,17 @@ class Dorm {
 		string faction;
 		map<string, Relationship> relationships;
 		SpellList spellList;
+		LearnMagic learnMagic;
 	public:
 		School& school;
 		vector<Member*> friends;
 
-		Dorm(Player& p, School& associatedSchool, const string& factionName) : player(p), school(associatedSchool), faction(factionName) {}
-	
+		Dorm(Player& p, School& associatedSchool, const string& factionName) :
+			player(p),
+			school(associatedSchool),
+			faction(factionName),
+			learnMagic(p, spellList, associatedSchool.getName(), factionName) {}
+
 	void enter() {
 		int choice;
 		do {
@@ -535,7 +588,14 @@ class Dorm {
 		exit(0);
 	}
 	void learn() {
-		// new learn class will be here
+		LearnMagic learnMagic(player, spellList, school.getName(), faction);
+		learnMagic.listAvailableClasses();
+
+		string chosenClass; 
+		cout << "Enter the class you want to attend: ";
+		cin >> chosenClass;
+
+		learnMagic.attendClass(chosenClass);
 	}
 	void initializeSpells() {
 		spellList.addSpell(Spell("Fireball", "A powerful fire attack", 10));
