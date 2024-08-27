@@ -6,8 +6,45 @@
 #include <cstdlib>
 #include <algorithm>
 
-
 using namespace std;
+
+class Spell {
+	public:
+		string name;
+		string description;
+		int powerLevel;
+
+		Spell(string n, string d, int p) : name(n), description(d), powerLevel(p) {}
+};
+
+class SpellList {
+	private:
+		vector<Spell> spells;
+
+	public:
+		void addSpell(const Spell& spell) {
+			spells.push_back(spell);
+		}
+		void removeSpell(const string& spellName) {
+			spells.erase(remove_if(spells.begin(), spells.end(),
+				[&spellName](const Spell& spell) { return spell.name == spellName; }),
+				spells.end());
+		}
+		void displaySpells() const {
+			cout << "Available Spells: " << endl;
+			for (const auto& spell : spells) {
+				cout << "Name: " << spell.name << ", Description: " << spell.description << ", Power Level: " << spell.powerLevel << "\n";
+			}
+		}
+		Spell* getSpell(const string& spellName) {
+			for (auto& spell : spells) {
+				if (spell.name == spellName) {
+					return &spell;
+				}
+			}
+			return nullptr;
+		}
+};
 
 class Relationship {
 	public:
@@ -36,6 +73,7 @@ class Member {
 		int affectionPoints;
 
 		Member(const string& memberName) : name(memberName), affectionPoints(0) {}
+		Member(string n) : name(n) {}
 };
 
 class School {
@@ -389,6 +427,7 @@ class Dorm {
 		Player& player;
 		string faction;
 		map<string, Relationship> relationships;
+		SpellList spellList;
 	public:
 		School& school;
 		vector<Member*> friends;
@@ -404,7 +443,8 @@ class Dorm {
 			cout << "2. Explore the Dorm Halls" << endl;
 			cout << "3. Check School/ Faction Rankings" << endl;
 			cout << "4. Learn (Gain new spells or knowledge)" << endl;
-			cout << "5. Quit School" << endl;
+			cout << "5. Check Spell List" << endl;
+			cout << "6. Quit School" << endl;
 
 			cin >> choice;
 
@@ -422,8 +462,11 @@ class Dorm {
 				learn();
 				break;
 			case 5:
-				quitSchool();
+				spellInventory();
 				return;
+			case 6:
+				quitSchool();
+				break;
 			default:
 				cout << "Invalid choice. Please choose again." << endl;
 				break;
@@ -494,6 +537,15 @@ class Dorm {
 	void learn() {
 		// new learn class will be here
 	}
+	void initializeSpells() {
+		spellList.addSpell(Spell("Fireball", "A powerful fire attack", 10));
+		spellList.addSpell(Spell("Ice Shard", "A sharp ice projectile", 8));
+		spellList.addSpell(Spell("Lightning Bolt", "A fast lightning strike", 12));
+	}
+	void spellInventory() {
+		spellList.displaySpells();
+	}
+
 // private:
 	// void increaseAffection(const string& memberName, int points) {
 		// if (relationships.find(memberName) == relationships.end()) {
