@@ -286,7 +286,34 @@ public:
 	}
 };
 
+class Credits {
+	private:
+		int totalCredits;
+	public:
 
+		Credits() : totalCredits(0) {}
+
+		void addCredits(int credits) {
+			totalCredits += credits;
+		}
+
+		bool canTakeClass(int classCost) const {
+			return totalCredits >= classCost;
+		}
+
+		void deductCredits(int classCost) {
+			if (canTakeClass(classCost)) {
+				totalCredits -= classCost;
+			}
+			else {
+				cout << "Not enough credits." << endl;
+			}
+		}
+
+		int getTotalCredits() const {
+			return totalCredits;
+		}
+};
 
 class Player {
 	private:
@@ -399,26 +426,71 @@ class Player {
 	string getName() const { return name; }
 };
 
+
+
 class LearnMagic {
 private:
 	Player& player;
-	map<string, vector<string>> availableClasses;
+	Credits& credits;
+	map<string, pair<int,vector<string>>> availableClasses;
 	SpellList& spellList;
+	string schoolName;
+	string factionName;
 
 public:
-	LearnMagic(Player& p, SpellList& spellList, const string& school, const string& faction) : player(p), spellList(spellList) {
-		initializeClasses(school, faction);
-	}
+	LearnMagic(Player& p, SpellList& sl, Credits& c, const string& school, const string& fac) :
+		player(p), spellList(sl), credits(c), schoolName(school), factionName(fac) {}
 
 	void initializeClasses(const string& school, const string& faction) {
 		if (school == "Fire School") {
-			availableClasses["Basic Fireball"] = { "Practice casting small fireballs." };
-			availableClasses["Advanced Pyromancy"] = { "Successfully cast a fireball in combat." };
+			availableClasses["Fireball Basics"] = { 2, { "Practice casting small fireballs."}};
+			availableClasses["Advanced Pyromancy"] = { 2,{ "Successfully cast a fireball in combat." }};
+			availableClasses["Inferno Mastery"] = { 2, {"Summon a controlled inferno in a safe environment.", "Use Inferno to defeat an enemy." }};
+			availableClasses["Phoenix Flame"] = { 10, { "Summon the flames of a Phoenix.", "Resurrect using Phoenix fire." }};
+			availableClasses["Firestorm"] = { 20, { "Create a devastating firestorm.", "Control the firestorm to avoid allies." }};
+			availableClasses["Lava Manipulation"] = { 20,{ "Manipulate molten lava from a volcano.", "Use lava to create a barrier." }};
 		}
 		else if (school == "Ice School") {
-			availableClasses["Water Manipulation"] = { "Gather water from the Mystic Lake.", "Demonstrate water shaping techniques." };
-			availableClasses["Ice Magic"] = { "Collect ice shards from the Frozen Tundra.","Defeat an Ice Elemental." };
+			availableClasses["Water Manipulation"] = { 2, { "Gather water from the Mystic Lake.", "Demonstrate water shaping techniques." }};
+			availableClasses["Ice Magic"] = { 2,{ "Collect ice shards from the Frozen Tundra.","Defeat an Ice Elemental." }};
+			availableClasses["Blizzard Control"] = { 2, {"Summon a blizzard in the Ice Caves.", "Use the blizzard to defeat a foe." }};
+			availableClasses["Frozen Armor"] = { 10, {"Create armor made of ice.", "Maintain the armor during combat." }};
+			availableClasses["Glacial Prison"] = { 14, { "Trap an enemy in a block of ice.", "Keep the enemy imprisoned until surrender." }};
+			availableClasses["Frostbite"] = { 20, { "Inflict frostbite on an enemy.", "Use frostbite to weaken an opponent's defenses." }};
 		}
+		else if (school == "Life School") {
+			availableClasses["Herbalism"] = { 2, { "Collect herbs from the Enchanted Forest.", "Create a healing potion." }};
+			availableClasses["Nature's Touch"] = { 2, {"Heal a wounded creature.", "Grow a plant using magic." }};
+			availableClasses["Forest Communion"] = { 2, { "Communicate with the forest spirits.", "Receive a blessing from the spirits." }};
+			availableClasses["Animal Bonding"] = { 10, { "Form a bond with a magical creature.", "Command the creature in battle." }};
+			availableClasses["Life Drain"] = { 14, { "Drain life force from a plant to heal yourself.", "Use drained life force to empower spells." }};
+			availableClasses["Rebirth"] = { 20,{ "Experience a ritual of rebirth.", "Return from the brink of death." }};
+		}
+		else if (school == "Death School") {
+			availableClasses["Necromancy Basics"] = { 2, { "Raise a small skeleton from the grave.","Control the skeleton to perform tasks." } };
+			availableClasses["Advanced Necromancy"] = { 2, {"Summon a wraith from the Shadow Realm.","Defeat a ghost using necromantic magic." }};
+			availableClasses["Dark Pact"] = { 2, { "Make a pact with a dark entity.", "Use the pact to increase your power in combat." }};
+			availableClasses["Soul Harvest"] = { 10, { "Harvest the soul of a defeated enemy.", "Use the soul to power your necromantic spells." }};
+			availableClasses["Shadow Walk"] = { 14, {"Move unseen through shadows.", "Avoid detection by enemies." }};
+			availableClasses["Reanimation"] = { 20, { "Reanimate a fallen ally for a short time.", "Command the reanimated ally in battle." }};
+		}
+		else if (school == "Storm School") {
+			availableClasses["Lightning Mastery"] = {2, { "Summon a lightning bolt during a storm.", "Use lightning to power a machine." }};
+			availableClasses["Storm's Fury"] = { 2,{ "Create a powerful storm.", "Use the storm to defeat an enemy." }};
+			availableClasses["Thunder Call"] = { 2, {"Summon thunder to intimidate opponents.", "Use thunder to disrupt enemy spells." }};
+			availableClasses["Tornado Summoning"] = { 10,{ "Create a tornado to wreak havoc.", "Control the tornado to avoid allies." }};
+			availableClasses["Static Shield"] = { 14, { "Create a shield of static electricity.", "Repel enemies using the shield." }};
+			availableClasses["Hurricane Command"] = { 20, { "Summon and control a hurricane.", "Use the hurricane to alter the battlefield." }};
+		}
+		else if (school == "Illusion School") {
+			availableClasses["Basic Illusions"] = { 2, { "Create a simple illusion to trick the senses.", "Maintain the illusion for a set time." }};
+			availableClasses["Advanced Illusions"] = { 2, { "Create a complex illusion to hide an object.", "Use illusion magic in combat." }};
+			availableClasses["Mind Manipulation"] = { 2, { "Influence the thoughts of a target.", "Create a shared illusion for a group." }};
+			availableClasses["Phantom Army"] = { 10,{ "Create an army of illusionary soldiers.", "Use the phantom army to deceive enemies." }};
+			availableClasses["Mirror Image"] = { 14, { "Create duplicates of yourself.", "Confuse enemies with the duplicates." }};
+			availableClasses["Reality Warp"] = { 20, { "Warp reality around you.", "Create a zone where nothing is as it seems." }};
+		}
+
 	}
 
 	void attendClass(const string& className) {
@@ -426,12 +498,21 @@ public:
 			cout << "You have already attended the " << className << " class." << endl;
 			return;
 		}
-		if (availableClasses.find(className) == availableClasses.end()) {
+		auto it = availableClasses.find(className);
+		if (it == availableClasses.end()) {
 			cout << "Class not available." << endl;
 			return;
 		}
+
+		int classCost = it->second.first;
+		if (!credits.canTakeClass(classCost)) {
+			cout << "You do not have enough credits to attend this class." << endl;
+			return;
+		}
+
+
 		cout << "You have chosen to attend the " << className << " class." << endl;
-		for (const auto& task : availableClasses[className]) {
+		for (const auto& task : it->second.second) {
 			cout << "Task: " << task << endl;
 			//task here
 			cout << "Task completed!" << endl;
@@ -442,12 +523,14 @@ public:
 		cout << "Congratulations! You have completed the " << className << " class." << endl;
 		player.learnSpell(className);
 		player.addLearnedClass(className);
+		credits.deductCredits(classCost);
+		credits.addCredits(classCost/2);
 	}
 
 	void listAvailableClasses() const {
 		cout << "Available classes:" << endl;
 		for (const auto& classPair : availableClasses) {
-			cout << "- " << classPair.first << endl;
+			cout << "- " << classPair.first << "(Cost: " << classPair.second.first << " credits)" << endl;
 		}
 	}
 
@@ -481,11 +564,13 @@ class Dorm {
 		School& school;
 		vector<Member*> friends;
 
+		Credits creditsObj;
+
 		Dorm(Player& p, School& associatedSchool, const string& factionName) :
-			player(p),
-			school(associatedSchool),
+			player(p), school(associatedSchool),
 			faction(factionName),
-			learnMagic(p, spellList, associatedSchool.getName(), factionName) {}
+			creditsObj(), // Create a Credits object
+			learnMagic(p, spellList, creditsObj, associatedSchool.getName(), factionName) {}
 
 	void enter() {
 		int choice;
@@ -588,7 +673,8 @@ class Dorm {
 		exit(0);
 	}
 	void learn() {
-		LearnMagic learnMagic(player, spellList, school.getName(), faction);
+		Credits creditsObj;
+		LearnMagic learnMagic(player, spellList, creditsObj, school.getName(), faction);
 		learnMagic.listAvailableClasses();
 
 		string chosenClass; 
