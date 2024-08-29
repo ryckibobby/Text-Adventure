@@ -167,100 +167,100 @@ class Item {
 class Faction {
 private:
 	string factionName;
-	string school;
+	string schoolName;
 public:
-	Faction(const string& schoolName, const string& name) : school(schoolName), factionName(name) {}
+	Faction(const string& schoolName, const string& name) : schoolName(schoolName), factionName(name) {}
 
 	void explore() {
-		cout << "You are exploring the " << school  << " Faction of the " << factionName << "." << endl;
+		cout << "You are exploring the " << schoolName  << " Faction of the " << factionName << "." << endl;
 		cout << "What would you like to study?: " << endl;
 
-		if (school == "Fire" && factionName == "Inferno Knights") {
+		if (schoolName == "Fire" && factionName == "Inferno Knights") {
 			cout << "1. Spellcasting - train with molten magic." << endl;
 			cout << "2. Magical Creatures - Interact with fire elemental beings." << endl;
 			cout << "3. Enchantments - Craft magical weapons and artifacts." << endl;
 		}
-		else if (school == "Fire" && factionName == "Pyro Scholars") {
+		else if (schoolName == "Fire" && factionName == "Pyro Scholars") {
 			cout << "1. Spellcasting - Study ancient fire magic spells." << endl;
 			cout << "2. Magical Creatures - Research fire crystals and their properties." << endl;
 			cout << "3. Enchantments - Experiment with fire-related enchantments." << endl;
 		}
-		else if (school == "Fire" && factionName == "Flameborn Order") {
+		else if (schoolName == "Fire" && factionName == "Flameborn Order") {
 			cout << "1. Spellcasting - Demonstrate your fire magic skills in a competition." << endl;
 			cout << "2. Magical Creatures - Create enchanted clothing with fire properties." << endl;
 			cout << "3. Enchantments - Brew a powerful fire-based potion." << endl;
 		}
-		else if (school == "Ice" && factionName == "Frost Guard") {
+		else if (schoolName == "Ice" && factionName == "Frost Guard") {
 			cout << "1. Spellcasting - Train with ice magic and beasts." << endl;
 			cout << "2. Magical Creatures - Craft cold-infused weapons." << endl;
 			cout << "3. Enchantments - Strategize and learn about ice magic combat." << endl;
 		}
-		else if (school == "Ice" && factionName == "Ice Scholars") {
+		else if (schoolName == "Ice" && factionName == "Ice Scholars") {
 			cout << "1. Spellcasting - Study ancient ice magic scrolls." << endl;
 			cout << "2. Magical Creatures - Brew potions with ice properties." << endl;
 			cout << "3. Enchantments - Observe ice magic phenomena and learn new techniques." << endl;
 		}
-		else if (school == "Ice" && factionName == "Glacial Sentinels") {
+		else if (schoolName == "Ice" && factionName == "Glacial Sentinels") {
 			cout << "1. Spellcasting - Learn defensive techniques against ice magic attacks." << endl;
 			cout << "2. Magical Creatures - Participate in combat training exercises." << endl;
 			cout << "3. Enchantments - Plan and coordinate strategies to defend against magical threats." << endl;
 		}
-		else if (school == "Life" && factionName == "Sylvan Scholars") {
+		else if (schoolName == "Life" && factionName == "Sylvan Scholars") {
 			cout << "1. Spellcasting - Cultivate magical plants and learn about nature magic." << endl;
 			cout << "2. Magical Creatures - Participate in ceremonies to connect with nature's cycles." << endl;
 			cout << "3. Enchantments - Study celestial events' impact on nature magic." << endl;
 		}
-		else if (school == "Life" && factionName == "Verdant Circle") {
+		else if (schoolName == "Life" && factionName == "Verdant Circle") {
 			cout << "1. Spellcasting - Learn methods for environmental repair and rejuvenation." << endl;
 			cout << "2. Magical Creatures - Connect with other wizards to advocate for environmental causes." << endl;
 			cout << "3. Enchantments - Nurture and magically enhance trees and plants." << endl;
 		}
-		else if (school == "Life" && factionName == "Eternal Bloom Council") {
+		else if (schoolName == "Life" && factionName == "Eternal Bloom Council") {
 			cout << "1. Spellcasting - Align cosmic and natural rhythms in meditation." << endl;
 			cout << "2. Magical Creatures - Reveal insights about your future self at the Sacred Reflection Pool." << endl;
 			cout << "3. Enchantments - Learn the Council's philosophies of eternal growth." << endl;
 		}
-		else if (school == "Death" && factionName == "Shadow Guardians") {
+		else if (schoolName == "Death" && factionName == "Shadow Guardians") {
 			cout << "1. Spellcasting - Master necromancy and dark magic." << endl;
 			cout << "2. Magical Creatures - Summon and control undead minions." << endl;
 			cout << "3. Enchantments - Craft powerful dark artifacts." << endl;
 		}
-		else if (school == "Death" && factionName == "Ebon Enclave") {
+		else if (schoolName == "Death" && factionName == "Ebon Enclave") {
 			cout << "1. Spellcasting - Delve into ancient death rituals and spells." << endl;
 			cout << "2. Magical Creatures - Study the nature and habits of dark creatures." << endl;
 			cout << "3. Enchantments - Create enchantments that manipulate life forces." << endl;
 		}
-		else if (school == "Death" && factionName == "Abyssal Sect") {
+		else if (schoolName == "Death" && factionName == "Abyssal Sect") {
 			cout << "1. Spellcasting - Engage in forbidden magic and rituals." << endl;
 			cout << "2. Magical Creatures - Cultivate and harness powerful abyssal entities." << endl;
 			cout << "3. Enchantments - Develop enchantments that control the flow of life and death." << endl;
 		}
-		else if (school == "Storm" && factionName == "Tempest Wardens") {
+		else if (schoolName == "Storm" && factionName == "Tempest Wardens") {
 			cout << "1. Spellcasting - Harness the power of storms in your spells." << endl;
 			cout << "2. Magical Creatures - Command lightning elementals and storm spirits." << endl;
 			cout << "3. Enchantments - Craft artifacts imbued with storm energy." << endl;
 		}
-		else if (school == "Storm" && factionName == "Thunder Scholars") {
+		else if (schoolName == "Storm" && factionName == "Thunder Scholars") {
 			cout << "1. Spellcasting - Study the ancient arts of thunder magic." << endl;
 			cout << "2. Magical Creatures - Research and tame storm beasts." << endl;
 			cout << "3. Enchantments - Experiment with lightning-infused enchantments." << endl;
 		}
-		else if (school == "Storm" && factionName == "Cyclone Order") {
+		else if (schoolName == "Storm" && factionName == "Cyclone Order") {
 			cout << "1. Spellcasting - Master wind manipulation and storm control." << endl;
 			cout << "2. Magical Creatures - Breed and control powerful storm creatures." << endl;
 			cout << "3. Enchantments - Forge magical items that control weather patterns." << endl;
 		}
-		else if (school == "Illusion" && factionName == "Veilkeepers") {
+		else if (schoolName == "Illusion" && factionName == "Veilkeepers") {
 			cout << "1. Spellcasting - Create and maintain illusions to deceive and protect." << endl;
 			cout << "2. Magical Creatures - Interact with illusionary beings and tricksters." << endl;
 			cout << "3. Enchantments - Craft illusions that alter perception and reality." << endl;
 		}
-		else if (school == "Illusion" && factionName == "Phantom Scholars") {
+		else if (schoolName == "Illusion" && factionName == "Phantom Scholars") {
 			cout << "1. Spellcasting - Study advanced illusion techniques and their applications." << endl;
 			cout << "2. Magical Creatures - Analyze and communicate with phantasms." << endl;
 			cout << "3. Enchantments - Develop enchantments that confuse and mislead." << endl;
 		}
-		else if (school == "Illusion" && factionName == "Mirage Circle") {
+		else if (schoolName == "Illusion" && factionName == "Mirage Circle") {
 			cout << "1. Spellcasting - Engage in illusionary duels and contests." << endl;
 			cout << "2. Magical Creatures - Use illusions to train and tame mythical creatures." << endl;
 			cout << "3. Enchantments - Create complex illusions for entertainment and strategic purposes." << endl;
@@ -283,6 +283,15 @@ public:
 				cout << "You wander around and find yourself back at the starting point." << endl;
 				break;
 		}
+	}
+	string getFactionName() const {
+		return factionName;
+	}
+	string getSchoolName() const {
+		return schoolName;
+	}
+	string getName()const {
+		return factionName;
 	}
 };
 
@@ -429,24 +438,25 @@ class Player {
 
 
 class LearnMagic {
-private:
+public:
 	Player& player;
 	Credits& credits;
-	map<string, pair<int,vector<string>>> availableClasses;
+	map<string, pair<int, vector<string>>> availableClasses;
 	SpellList& spellList;
-	string schoolName;
-	string factionName;
+	School selectedSchool;
+	Faction selectedFaction;
 
-public:
-	LearnMagic(Player& p, SpellList& sl, Credits& c, const string& school, const string& fac) :
-		player(p), spellList(sl), credits(c), schoolName(school), factionName(fac) {}
+	LearnMagic(Player& p, SpellList& sl, Credits& c, School school, Faction faction) :
+		player(p), spellList(sl), credits(c), selectedSchool(school), selectedFaction(faction) {}
 
 	void initializeClasses(const string& school, const string& faction) {
 		if (school == "Fire School") {
 			availableClasses["Fireball Basics"] = { 2, { "Practice casting small fireballs."}};
 			availableClasses["Advanced Pyromancy"] = { 2,{ "Successfully cast a fireball in combat." }};
 			availableClasses["Inferno Mastery"] = { 2, {"Summon a controlled inferno in a safe environment.", "Use Inferno to defeat an enemy." }};
-			availableClasses["Phoenix Flame"] = { 10, { "Summon the flames of a Phoenix.", "Resurrect using Phoenix fire." }};
+			availableClasses["Flame Shield"] = { 6, { "Create a protective shield of fire.", "Maintain the shield during combat." } };
+			availableClasses["Phoenix Flame"] = { 10, { "Summon the flames of a Phoenix.", "Resurrect using Phoenix fire." } };
+			availableClasses["Dragon's Breath"] = { 16, { "Summon the fiery breath of a dragon.", "Use Dragon's Breath to incinerate enemies." } };
 			availableClasses["Firestorm"] = { 20, { "Create a devastating firestorm.", "Control the firestorm to avoid allies." }};
 			availableClasses["Lava Manipulation"] = { 20,{ "Manipulate molten lava from a volcano.", "Use lava to create a barrier." }};
 		}
@@ -454,40 +464,50 @@ public:
 			availableClasses["Water Manipulation"] = { 2, { "Gather water from the Mystic Lake.", "Demonstrate water shaping techniques." }};
 			availableClasses["Ice Magic"] = { 2,{ "Collect ice shards from the Frozen Tundra.","Defeat an Ice Elemental." }};
 			availableClasses["Blizzard Control"] = { 2, {"Summon a blizzard in the Ice Caves.", "Use the blizzard to defeat a foe." }};
+			availableClasses["Ice Barrier"] = { 6, { "Create a barrier of solid ice.", "Use the barrier to block attacks." } };
 			availableClasses["Frozen Armor"] = { 10, {"Create armor made of ice.", "Maintain the armor during combat." }};
 			availableClasses["Glacial Prison"] = { 14, { "Trap an enemy in a block of ice.", "Keep the enemy imprisoned until surrender." }};
+			availableClasses["Hailstorm"] = { 16, { "Summon a hailstorm to pelt enemies.", "Control the storm to target only foes." } };
 			availableClasses["Frostbite"] = { 20, { "Inflict frostbite on an enemy.", "Use frostbite to weaken an opponent's defenses." }};
 		}
 		else if (school == "Life School") {
 			availableClasses["Herbalism"] = { 2, { "Collect herbs from the Enchanted Forest.", "Create a healing potion." }};
 			availableClasses["Nature's Touch"] = { 2, {"Heal a wounded creature.", "Grow a plant using magic." }};
 			availableClasses["Forest Communion"] = { 2, { "Communicate with the forest spirits.", "Receive a blessing from the spirits." }};
+			availableClasses["Vine Whip"] = { 6, { "Summon magical vines to ensnare enemies.", "Control the vines to avoid harming allies." } };
 			availableClasses["Animal Bonding"] = { 10, { "Form a bond with a magical creature.", "Command the creature in battle." }};
 			availableClasses["Life Drain"] = { 14, { "Drain life force from a plant to heal yourself.", "Use drained life force to empower spells." }};
+			availableClasses["Healing Aura"] = { 16, { "Create an aura that heals nearby allies.", "Maintain the aura during battle." } };
 			availableClasses["Rebirth"] = { 20,{ "Experience a ritual of rebirth.", "Return from the brink of death." }};
 		}
 		else if (school == "Death School") {
 			availableClasses["Necromancy Basics"] = { 2, { "Raise a small skeleton from the grave.","Control the skeleton to perform tasks." } };
 			availableClasses["Advanced Necromancy"] = { 2, {"Summon a wraith from the Shadow Realm.","Defeat a ghost using necromantic magic." }};
 			availableClasses["Dark Pact"] = { 2, { "Make a pact with a dark entity.", "Use the pact to increase your power in combat." }};
+			availableClasses["Curse of Weakness"] = { 6, { "Curse an enemy to reduce their strength.", "Maintain the curse during combat." } };
 			availableClasses["Soul Harvest"] = { 10, { "Harvest the soul of a defeated enemy.", "Use the soul to power your necromantic spells." }};
 			availableClasses["Shadow Walk"] = { 14, {"Move unseen through shadows.", "Avoid detection by enemies." }};
+			availableClasses["Death's Embrace"] = { 16, { "Summon the chilling touch of death to weaken foes.", "Use Death's Embrace to drain life force." } };
 			availableClasses["Reanimation"] = { 20, { "Reanimate a fallen ally for a short time.", "Command the reanimated ally in battle." }};
 		}
 		else if (school == "Storm School") {
 			availableClasses["Lightning Mastery"] = {2, { "Summon a lightning bolt during a storm.", "Use lightning to power a machine." }};
 			availableClasses["Storm's Fury"] = { 2,{ "Create a powerful storm.", "Use the storm to defeat an enemy." }};
 			availableClasses["Thunder Call"] = { 2, {"Summon thunder to intimidate opponents.", "Use thunder to disrupt enemy spells." }};
+			availableClasses["Chain Lightning"] = { 6, { "Summon lightning that strikes multiple targets.", "Control the lightning to avoid allies." } };
 			availableClasses["Tornado Summoning"] = { 10,{ "Create a tornado to wreak havoc.", "Control the tornado to avoid allies." }};
 			availableClasses["Static Shield"] = { 14, { "Create a shield of static electricity.", "Repel enemies using the shield." }};
+			availableClasses["Storm Surge"] = { 16, { "Summon a surge of electrical energy to empower your spells.", "Maintain the surge during combat." } };
 			availableClasses["Hurricane Command"] = { 20, { "Summon and control a hurricane.", "Use the hurricane to alter the battlefield." }};
 		}
 		else if (school == "Illusion School") {
 			availableClasses["Basic Illusions"] = { 2, { "Create a simple illusion to trick the senses.", "Maintain the illusion for a set time." }};
 			availableClasses["Advanced Illusions"] = { 2, { "Create a complex illusion to hide an object.", "Use illusion magic in combat." }};
 			availableClasses["Mind Manipulation"] = { 2, { "Influence the thoughts of a target.", "Create a shared illusion for a group." }};
+			availableClasses["False Vision"] = { 6, { "Create a false vision to mislead enemies.", "Maintain the illusion to deceive foes." } };
 			availableClasses["Phantom Army"] = { 10,{ "Create an army of illusionary soldiers.", "Use the phantom army to deceive enemies." }};
 			availableClasses["Mirror Image"] = { 14, { "Create duplicates of yourself.", "Confuse enemies with the duplicates." }};
+			availableClasses["Dreamweaving"] = { 16, { "Enter the dreams of others to plant suggestions.", "Control the dream to achieve your goals." } };
 			availableClasses["Reality Warp"] = { 20, { "Warp reality around you.", "Create a zone where nothing is as it seems." }};
 		}
 
@@ -529,27 +549,10 @@ public:
 
 	void listAvailableClasses() const {
 		cout << "Available classes:" << endl;
+		cout << "Number of available classes: " << availableClasses.size() << endl; //map isnt populated
 		for (const auto& classPair : availableClasses) {
 			cout << "- " << classPair.first << "(Cost: " << classPair.second.first << " credits)" << endl;
 		}
-	}
-
-	void learnNewSpell() {
-		string spellName, description;
-		int power;
-
-		cout << "Enter the name of the new spell: ";
-		cin.ignore();
-		getline(cin, spellName);
-
-		cout << "Enter a description for the spell: ";
-		getline(cin, description);
-
-		cout << "Enter the power level of the spell: ";
-		cin >> power;
-
-		spellList.addSpell(Spell(spellName, description, power));
-		cout << "You have successfully learned the spell " << spellName << "!" << endl;
 	}
 };
 
@@ -563,14 +566,13 @@ class Dorm {
 	public:
 		School& school;
 		vector<Member*> friends;
-
 		Credits creditsObj;
 
 		Dorm(Player& p, School& associatedSchool, const string& factionName) :
 			player(p), school(associatedSchool),
 			faction(factionName),
-			creditsObj(), // Create a Credits object
-			learnMagic(p, spellList, creditsObj, associatedSchool.getName(), factionName) {}
+			creditsObj(),
+			learnMagic(p, spellList, creditsObj, associatedSchool, Faction(associatedSchool.getName(), factionName)) {}
 
 	void enter() {
 		int choice;
@@ -674,7 +676,7 @@ class Dorm {
 	}
 	void learn() {
 		Credits creditsObj;
-		LearnMagic learnMagic(player, spellList, creditsObj, school.getName(), faction);
+		// LearnMagic learnMagic(player, spellList, creditsObj, school.getName(), faction);
 		learnMagic.listAvailableClasses();
 
 		string chosenClass; 
@@ -706,56 +708,81 @@ int main() {
 	School fireSchool("Fire");
 	fireSchool.addMember("Ignatius", 110);
 	fireSchool.addMember("Ashen", 95);
+	fireSchool.addMember("Scorcha", 85);
 	fireSchool.addMember("Ember", 70);
 	fireSchool.addMember("Scorch", 62);
 	fireSchool.addMember("Blaze", 59);
 	fireSchool.addMember("Pyro", 54);
 	fireSchool.addMember("Pyra", 53);
+	fireSchool.addMember("Inferna", 40);
+	fireSchool.addMember("Ignis", 20);
+	fireSchool.addMember("Volcanis", 13);
 
 	School iceSchool("Ice");
 	iceSchool.addMember("Frostine", 115);
 	iceSchool.addMember("Glacia", 105);
 	iceSchool.addMember("Tundra", 95);
+	iceSchool.addMember("Icetide", 80);
 	iceSchool.addMember("Cyros", 63);
-	iceSchool.addMember("Frost", 52);
-	iceSchool.addMember("Crystal", 46);
-	iceSchool.addMember("Snow", 40);
+	iceSchool.addMember("Frost", 52); 
+	iceSchool.addMember("Snowlyn", 48);
+	iceSchool.addMember("Crystal", 46); 
+	iceSchool.addMember("Snow", 40); 
+	iceSchool.addMember("Frost", 30);
+	iceSchool.addMember("Glaciana", 15);
 
 	School lifeSchool("Life");
 	lifeSchool.addMember("Thorne", 155);
+	lifeSchool.addMember("Ivyra", 101);
 	lifeSchool.addMember("Briar", 97);
+	lifeSchool.addMember("Thalia", 84);
 	lifeSchool.addMember("Fern", 79); 
 	lifeSchool.addMember("Sylva", 55); 
 	lifeSchool.addMember("Nox", 45); 
+	lifeSchool.addMember("Thornebark", 39);
 	lifeSchool.addMember("Blossom", 33);
 	lifeSchool.addMember("Ivy", 20);
+	lifeSchool.addMember("Liora", 10);
 
 	School deathSchool("Death");
+	deathSchool.addMember("Grimora", 115);
 	deathSchool.addMember("Shade",105);
 	deathSchool.addMember("Grim", 92);
 	deathSchool.addMember("Raven", 85);
 	deathSchool.addMember("Grave", 80);
 	deathSchool.addMember("Shadow", 75);
+	deathSchool.addMember("Nocturn", 69);
+	deathSchool.addMember("Obsidian", 55);
 	deathSchool.addMember("Vesper", 44);
 	deathSchool.addMember("Dusk", 33);
+	deathSchool.addMember("Noxis", 30);
 
 	School stormSchool("Storm");
 	stormSchool.addMember("Zephyr", 114);
+	stormSchool.addMember("Sky", 105);
+	stormSchool.addMember("Cyclonis", 103);
 	stormSchool.addMember("Voltus", 96);
 	stormSchool.addMember("Gale", 93);
 	stormSchool.addMember("Tempest", 81);
 	stormSchool.addMember("Raiden", 75);
 	stormSchool.addMember("Galea", 60);
 	stormSchool.addMember("Typhos", 24);
+	stormSchool.addMember("Zephyra", 20);
+	stormSchool.addMember("Cyro", 20);
 
 	School illusionSchool("Illusion");
 	illusionSchool.addMember("Mirage", 111);
+	illusionSchool.addMember("Phantasma", 99);
+	illusionSchool.addMember("Nebulyn", 98);
 	illusionSchool.addMember("Haze", 93);
 	illusionSchool.addMember("Spectra", 83);
+	illusionSchool.addMember("Lucindra", 75);
+	illusionSchool.addMember("Arcanis", 60);
 	illusionSchool.addMember("Enigma", 44);
 	illusionSchool.addMember("Sablemoon", 32);
 	illusionSchool.addMember("Mistralyn", 27);
 	illusionSchool.addMember("Lucinda", 15);
+
 
 	string playerName;
 	char playAgain;
@@ -766,6 +793,11 @@ int main() {
 		getline(cin, playerName);
 
 		Player player(playerName);
+		SpellList spellList;
+		Credits credits(); 
+
+		
+
 
 		cout << "Hello, " << playerName << "! Let's begin your adventure." << endl;
 
@@ -889,7 +921,15 @@ int main() {
 		}
 
 		Faction selectedFaction(school, faction);
+
+		string schoolName = selectedSchool->getName();
+		string factionName = selectedFaction.getName();
+
 		selectedFaction.explore();
+
+		 
+		
+		// LearnMagic learnMagic(player, spellList, credits, selectedSchool->getName(), faction);
 
 		Dorm dorm(player, *selectedSchool, faction);
 		dorm.enter();
