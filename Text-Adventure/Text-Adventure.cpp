@@ -614,26 +614,26 @@ class Dorm {
 		} while (choice != 6 && choice != 4);
 	}
 	void exploreDormHalls() {
-		//implement talk to dorm mates 
-
+		// check if there are enough members to explore
 		if (school.members.size() < 2) {
 			cout << "Not enough members to explore the dorm halls." << endl;
 			return;
 		}
 
-		//randomly select two members from the same school
 		srand(static_cast<unsigned int>(time(nullptr)));
-		int index1 = rand() % school.members.size();
-		int index2;
-		do {
-			index2 = rand() % school.members.size();
-		} while (index1 == index2);
-
-		const Member& member1 = school.members[index1];
-		const Member& member2 = school.members[index2];
 
 		bool continueExploring = true;
 		while (continueExploring) {
+			// randomly select two members from the same school
+			int index1 = rand() % school.members.size();
+			int index2;
+			do {
+				index2 = rand() % school.members.size();
+			} while (index1 == index2);
+
+			const Member& member1 = school.members[index1];
+			const Member& member2 = school.members[index2];
+
 			cout << "As you wander through the dorm halls, you come across " << member1.name << " and " << member2.name << " having a conversation: " << endl;
 
 			cout << member1.name << ": 'I heard there's a new spell that's incredibly powerful. Have you tried it?'" << endl;
@@ -643,83 +643,83 @@ class Dorm {
 			cout << "What would you like to do?" << endl;
 			cout << "1. Ask " << member1.name << " about the new spell." << endl;
 			cout << "2. Offer to help " << member2.name << " with potion-making." << endl;
-			cout << "3. Continue exploring the dorm halls." << endl;
-			cout << "4. Return to your dorm room." << endl;
+			cout << "3. Share your magical abilities with " << member1.name << " and " << member2.name << endl;
+			cout << "4. Continue exploring the dorm halls." << endl;
+			cout << "5. Return to your dorm room." << endl;
 
 			int choice;
 			cin >> choice;
+
+			// declare and initialize outside the switch statement
+			int newIndex1 = rand() % school.members.size();
+			int newIndex2;
+			do {
+				newIndex2 = rand() % school.members.size();
+			} while (newIndex1 == newIndex2);
+
+			const Member& newMember1 = school.members[newIndex1];
+			const Member& newMember2 = school.members[newIndex2];
+
+			int scenario = rand() % 3;
 
 			switch (choice) {
 			case 1:
 				cout << "You approach " << member1.name << " and ask about the new spell." << endl;
 				cout << member1.name << " explains that it's a spell that can enhance magical abilities but requires special ingredients to cast." << endl;
-				// increase affection with member1
 				// increaseAffection(member1.name, 10);
 				break;
+
 			case 2:
 				cout << "You offer to help " << member2.name << " with potion-making." << endl;
 				cout << member2.name << " gratefully accepts, and you spend some time working together, learning about potion recipes and brewing techniques." << endl;
-				// increase affection with member2
 				// increaseAffection(member2.name, 15);
 				break;
+
 			case 3:
 				cout << "You share your own magical discoveries with both members." << endl;
-				//based on credit score good or bad
 				cout << member1.name << " and " << member2.name << " are impressed and show a keen interest in your discoveries." << endl;
-				
-				// increase affection with both members
 				// increaseAffection(member1.name, 10);
 				// increaseAffection(member2.name, 10);
 				break;
+
 			case 4:
 				cout << "You decide to continue exploring the dorm halls." << endl;
 
-				index1 = rand() % school.members.size();
-				index2;
-				do {
-					index2 = rand() % school.members.size();
-				} while (index1 == index2);
-
-				const Member& newMember1 = school.members[index1];
-				const Member& newMember2 = school.members[index2];
-
 				cout << "You encounter " << newMember1.name << " and " << newMember2.name << " having a lively discussion." << endl;
 
-				// add scenarios
-				int scenario = rand() % 3;
 				switch (scenario) {
 				case 0:
 					cout << newMember1.name << " is practicing a new spell and invites you to join in." << endl;
 					cout << newMember2.name << " seems to be skeptical of the spell's effectiveness." << endl;
 					// handle friendship/rivalry
-					// increase friendship with newMember1
-					// decrease affection or create rivalry with newMember2
 					break;
+
 				case 1:
 					cout << newMember1.name << " is organizing a magical duel and asks if you'd like to participate." << endl;
 					cout << newMember2.name << " is there to watch and cheer you on." << endl;
 					// handle friendship/rivalry
-					// increase friendship with newMember1
-					// increase friendship with newMember2 for support
 					break;
+
 				case 2:
 					cout << newMember1.name << " and " << newMember2.name << " are debating a magical theory." << endl;
 					cout << "They invite you to share your opinion on the matter." << endl;
 					// handle friendship/rivalry
-					// increase friendship with both members for participation
 					break;
 				}
 				break;
+
 			case 5:
 				cout << "You decide to return to your dorm room." << endl;
 				continueExploring = false; // exit the loop
 				break;
+
 			default:
 				cout << "Invalid choice. You decide to continue exploring the dorm halls." << endl;
 				break;
 			}
 		}
 	}
+
 	void checkRankings() const {
 		school.showRankings();
 	}
@@ -768,8 +768,13 @@ int main() {
 	fireSchool.addMember("Blaze", 59);
 	fireSchool.addMember("Pyro", 54);
 	fireSchool.addMember("Pyra", 53);
+	fireSchool.addMember("Emberis", 45);
 	fireSchool.addMember("Inferna", 40);
+	fireSchool.addMember("Blazewind", 37);
+	fireSchool.addMember("Ignitia", 28);
+	fireSchool.addMember("Searis", 22);
 	fireSchool.addMember("Ignis", 20);
+	fireSchool.addMember("Volcanor", 16);
 	fireSchool.addMember("Volcanis", 13);
 
 	School iceSchool("Ice");
@@ -783,7 +788,13 @@ int main() {
 	iceSchool.addMember("Crystal", 46); 
 	iceSchool.addMember("Snow", 40); 
 	iceSchool.addMember("Frost", 30);
+	iceSchool.addMember("Glacier", 25);
+	iceSchool.addMember("Frostella", 22);
+	iceSchool.addMember("Snowbreeze", 19);
 	iceSchool.addMember("Glaciana", 15);
+	iceSchool.addMember("Icyra", 14);
+	iceSchool.addMember("Cryosus", 10);
+	
 
 	School lifeSchool("Life");
 	lifeSchool.addMember("Thorne", 155);
@@ -795,7 +806,12 @@ int main() {
 	lifeSchool.addMember("Nox", 45); 
 	lifeSchool.addMember("Thornebark", 39);
 	lifeSchool.addMember("Blossom", 33);
+	lifeSchool.addMember("Eldara", 30);
+	lifeSchool.addMember("Fayla", 28);
+	lifeSchool.addMember("Greenleaf", 24);
 	lifeSchool.addMember("Ivy", 20);
+	lifeSchool.addMember("Willow", 18);
+	lifeSchool.addMember("Aurelia", 12);
 	lifeSchool.addMember("Liora", 10);
 
 	School deathSchool("Death");
@@ -810,6 +826,11 @@ int main() {
 	deathSchool.addMember("Vesper", 44);
 	deathSchool.addMember("Dusk", 33);
 	deathSchool.addMember("Noxis", 30);
+	deathSchool.addMember("Moros", 27);
+	deathSchool.addMember("Lamia", 21);
+	deathSchool.addMember("Shadeveil", 18);
+	deathSchool.addMember("Ravenor", 15);
+	deathSchool.addMember("Ebonis", 12);
 
 	School stormSchool("Storm");
 	stormSchool.addMember("Zephyr", 114);
@@ -821,8 +842,13 @@ int main() {
 	stormSchool.addMember("Raiden", 75);
 	stormSchool.addMember("Galea", 60);
 	stormSchool.addMember("Typhos", 24);
-	stormSchool.addMember("Zephyra", 20);
+	stormSchool.addMember("Stormclaw", 22);
+	stormSchool.addMember("Zephyra", 21);
 	stormSchool.addMember("Cyro", 20);
+	stormSchool.addMember("Windrider", 19);
+	stormSchool.addMember("Electra", 17);
+	stormSchool.addMember("Thundersky", 14);
+	stormSchool.addMember("Tempestra", 10);
 
 	School illusionSchool("Illusion");
 	illusionSchool.addMember("Mirage", 111);
@@ -835,7 +861,12 @@ int main() {
 	illusionSchool.addMember("Enigma", 44);
 	illusionSchool.addMember("Sablemoon", 32);
 	illusionSchool.addMember("Mistralyn", 27);
+	illusionSchool.addMember("Dreamara", 25);
+	illusionSchool.addMember("Mystara", 20);
+	illusionSchool.addMember("Glimmer", 16);
 	illusionSchool.addMember("Lucinda", 15);
+	illusionSchool.addMember("Shadewyn", 12);
+	illusionSchool.addMember("Mirabella", 10);
 
 
 	string playerName;
