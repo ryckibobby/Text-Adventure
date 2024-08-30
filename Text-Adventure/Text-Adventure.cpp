@@ -51,7 +51,9 @@ class Relationship {
 		string friendName;
 		mutable int affectionPoints; //determines how strong the relationship is
 
-		Relationship(const string& name, int affection = 0) : friendName(name) , affectionPoints(affection) {}
+		Relationship() : friendName("Unknown"),affectionPoints(0) {}
+
+		Relationship(const string& name, int affection = 0) : friendName(name) , affectionPoints(affection) {} 
 
 		void increaseAffection(int points) {
 			affectionPoints += points;
@@ -105,7 +107,7 @@ class School {
 
 			cout << "Rankings for the " << name << " School: " << endl;
 			for (size_t i = 0; i < rankings.size(); ++i) {
-				cout << i + 1 << ". " << rankings[i].first << " - " << rankings[i].second << " points" << endl;
+				cout << i + 1 << ". " << rankings[i].first << " - " << rankings[i].second << " credits" << endl;
 			}
 		}
 
@@ -574,6 +576,7 @@ class Dorm {
 			creditsObj(),
 			learnMagic(p, spellList, creditsObj, associatedSchool, Faction(associatedSchool.getName(), factionName)) {}
 
+		
 	void enter() {
 		int choice;
 		do {
@@ -666,44 +669,108 @@ class Dorm {
 			case 1:
 				cout << "You approach " << member1.name << " and ask about the new spell." << endl;
 				cout << member1.name << " explains that it's a spell that can enhance magical abilities but requires special ingredients to cast." << endl;
-				// increaseAffection(member1.name, 10);
+				increaseAffection(member1.name, 10);
 				break;
 
 			case 2:
 				cout << "You offer to help " << member2.name << " with potion-making." << endl;
 				cout << member2.name << " gratefully accepts, and you spend some time working together, learning about potion recipes and brewing techniques." << endl;
-				// increaseAffection(member2.name, 15);
+				increaseAffection(member2.name, 15);
 				break;
 
 			case 3:
-				cout << "You share your own magical discoveries with both members." << endl;
-				cout << member1.name << " and " << member2.name << " are impressed and show a keen interest in your discoveries." << endl;
-				// increaseAffection(member1.name, 10);
-				// increaseAffection(member2.name, 10);
+				cout << "You decide to share your own magical discoveries with " << member1.name << " and " << member2.name << "." << endl;
+				if (creditsObj.getTotalCredits() >= 10) {
+					cout << "You demonstrate a complex spell you recently mastered, combining elements of both fire and lightning to create a dazzling display of power." << endl;
+					cout << member1.name << " and " << member2.name << " watch in awe, clearly impressed by your abilities." << endl;
+					cout << member1.name << ": 'Incredible! I've never seen anything like that. You must teach me this spell!'" << endl;
+					cout << member2.name << ": 'I think this could be the key to perfecting my potion-making as well. Your skills are truly remarkable.'" << endl;
+					  increaseAffection(member1.name, 10);
+					  increaseAffection(member2.name, 10);
+
+				}
+				else {
+					cout << "You attempt to share a basic spell, but it doesn't quite have the impact you hoped for." << endl;
+					cout << member1.name << " and " << member2.name << " exchange glances, their interest waning." << endl;
+					cout << member1.name << ": 'Hmm, that's interesting, but I've seen better.'" << endl;
+					cout << member2.name << ": 'Maybe you should focus on refining your skills before showing off next time.'" << endl;
+				}
 				break;
 
 			case 4:
 				cout << "You decide to continue exploring the dorm halls." << endl;
-
 				cout << "You encounter " << newMember1.name << " and " << newMember2.name << " having a lively discussion." << endl;
 
 				switch (scenario) {
 				case 0:
 					cout << newMember1.name << " is practicing a new spell and invites you to join in." << endl;
 					cout << newMember2.name << " seems to be skeptical of the spell's effectiveness." << endl;
-					// handle friendship/rivalry
+					cout << "Do you join in or express your doubts?" << endl;
+					cout << "1. Join " << newMember1.name << " and practice the spell." << endl;
+					cout << "2. Agree with " << newMember2.name << " and express your doubts." << endl;
+					
+					int scenarioChoice;
+					cin >> scenarioChoice;
+
+					if (scenarioChoice == 1) {
+						cout << newMember1.name << " appreciates your willingness to experiment and you successfully practice the spell together." << endl; 
+						// increase friendship with newMember1
+						increaseAffection(newMember1.name, 10);
+
+					}
+					else {
+						cout << newMember2.name << " nods in agreement, appreciating your critical thinking." << endl;
+						// increase friendship with newMember2
+						increaseAffection(newMember2.name, 10);
+
+					}
 					break;
 
 				case 1:
 					cout << newMember1.name << " is organizing a magical duel and asks if you'd like to participate." << endl;
 					cout << newMember2.name << " is there to watch and cheer you on." << endl;
-					// handle friendship/rivalry
+					cout << "Do you accept the challenge or politely decline?" << endl;
+					cout << "1. Accept the duel challenge." << endl;
+					cout << "2. Politely decline and cheer on the others." << endl;
+
+					cin >> scenarioChoice;
+
+					if (scenarioChoice == 1) {
+						cout << "You accept the challenge and engage in a thrilling duel with " << newMember1.name << "." << endl;
+						cout << "The duel is intense, but you manage to hold your own, earning respect from both members." << endl;
+						// increase friendship with both members
+						increaseAffection(newMember1.name, 10);
+						increaseAffection(newMember2.name, 10);
+
+					}
+					else {
+						cout << "You politely decline, preferring to observe the duel. " << newMember2.name << " appreciates your support from the sidelines." << endl;
+						// increase friendship with newMember2
+						increaseAffection(newMember2.name, 15);
+
+					}
 					break;
 
 				case 2:
 					cout << newMember1.name << " and " << newMember2.name << " are debating a magical theory." << endl;
 					cout << "They invite you to share your opinion on the matter." << endl;
-					// handle friendship/rivalry
+					cout << "Do you side with " << newMember1.name << " or " << newMember2.name << "?" << endl;
+					cout << "1. Side with " << newMember1.name << " and support their argument." << endl;
+					cout << "2. Side with " << newMember2.name << " and support their counterargument." << endl;
+
+					cin >> scenarioChoice;
+
+					if (scenarioChoice == 1) {
+						cout << newMember1.name << " is pleased with your support and the debate continues with renewed vigor." << endl;
+						// increase friendship with newMember1
+						increaseAffection(newMember1.name, 10);
+
+					}
+					else {
+						cout << newMember2.name << " smiles, happy to have someone who sees things from their perspective." << endl;
+						// increase friendship with newMember2
+						increaseAffection(newMember2.name, 10);
+					}
 					break;
 				}
 				break;
@@ -730,7 +797,6 @@ class Dorm {
 	}
 	void learn() {
 		Credits creditsObj;
-		// LearnMagic learnMagic(player, spellList, creditsObj, school.getName(), faction);
 		learnMagic.listAvailableClasses();
 
 		string chosenClass; 
@@ -748,13 +814,13 @@ class Dorm {
 		spellList.displaySpells();
 	}
 
-// private:
-	// void increaseAffection(const string& memberName, int points) {
-		// if (relationships.find(memberName) == relationships.end()) {
-			// relationships[memberName] = Relationship(memberName);
-		// }
-		// relationships[memberName].increaseAffection(points);
-	// }
+ private:
+	 void increaseAffection(const string& memberName, int points) {
+		if (relationships.find(memberName) == relationships.end()) {
+			 relationships[memberName] = Relationship(memberName);
+		 }
+		 relationships[memberName].increaseAffection(points);
+	 }
 };
 
 int main() {
@@ -1011,10 +1077,8 @@ int main() {
 		string factionName = selectedFaction.getName();
 
 		selectedFaction.explore();
-
-		 
 		
-		// LearnMagic learnMagic(player, spellList, credits, selectedSchool->getName(), faction);
+		// LearnMagic learnMagic(player, spellList, credits, *selectedSchool, selectedFaction);
 
 		Dorm dorm(player, *selectedSchool, faction);
 		dorm.enter();
