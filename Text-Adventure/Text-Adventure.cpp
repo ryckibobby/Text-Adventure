@@ -632,38 +632,92 @@ class Dorm {
 		const Member& member1 = school.members[index1];
 		const Member& member2 = school.members[index2];
 
-		cout << "As you wander through the dorm halls, you come across " << member1.name << " and " << member2.name << " having a conversation: " << endl;
+		bool continueExploring = true;
+		while (continueExploring) {
+			cout << "As you wander through the dorm halls, you come across " << member1.name << " and " << member2.name << " having a conversation: " << endl;
 
-		cout << member1.name << ": 'I heard there's a new spell that's incredibly powerful. Have you tried it?'" << endl;
-		cout << member2.name << ": 'Not yet. I've been focused on perfecting my potion-making skills. But maybe I should give it a try.'" << endl;
-		cout << member1.name << ": 'You should! It could really boost your abilities.'" << endl;
+			cout << member1.name << ": 'I heard there's a new spell that's incredibly powerful. Have you tried it?'" << endl;
+			cout << member2.name << ": 'Not yet. I've been focused on perfecting my potion-making skills. But maybe I should give it a try.'" << endl;
+			cout << member1.name << ": 'You should! It could really boost your abilities.'" << endl;
 
-		cout << "What would you like to do?" << endl;
-		cout << "1. Ask " << member1.name << " about the new spell." << endl;
-		cout << "2. Offer to help " << member2.name << "with potion-making." << endl;
-		cout << "3. Continue exploring the dorm halls." << endl;
+			cout << "What would you like to do?" << endl;
+			cout << "1. Ask " << member1.name << " about the new spell." << endl;
+			cout << "2. Offer to help " << member2.name << " with potion-making." << endl;
+			cout << "3. Continue exploring the dorm halls." << endl;
+			cout << "4. Return to your dorm room." << endl;
 
-		int choice;
-		cin >> choice;
+			int choice;
+			cin >> choice;
 
-		switch (choice) {
+			switch (choice) {
 			case 1:
 				cout << "You approach " << member1.name << " and ask about the new spell." << endl;
-				cout << member1.name << " explains that its a spell that can enhance magical abilities but requires special ingredients to cast." << endl;
-				// increaseAffection(member1.name, 10); 
+				cout << member1.name << " explains that it's a spell that can enhance magical abilities but requires special ingredients to cast." << endl;
+				// increase affection with member1
+				// increaseAffection(member1.name, 10);
 				break;
 			case 2:
-				cout << "You offer to help " << member2.name << "with potion-making." << endl;
-				cout << member2.name << "gratefully accepts and you spend some time working together, learning about potion recipes and brewing techniques." << endl;
+				cout << "You offer to help " << member2.name << " with potion-making." << endl;
+				cout << member2.name << " gratefully accepts, and you spend some time working together, learning about potion recipes and brewing techniques." << endl;
+				// increase affection with member2
 				// increaseAffection(member2.name, 15);
 				break;
 			case 3:
+				cout << "You share your own magical discoveries with both members." << endl;
+				//based on credit score good or bad
+				cout << member1.name << " and " << member2.name << " are impressed and show a keen interest in your discoveries." << endl;
+				
+				// increase affection with both members
+				// increaseAffection(member1.name, 10);
+				// increaseAffection(member2.name, 10);
+				break;
+			case 4:
 				cout << "You decide to continue exploring the dorm halls." << endl;
-				//continueExploreDormHalls
+
+				index1 = rand() % school.members.size();
+				index2;
+				do {
+					index2 = rand() % school.members.size();
+				} while (index1 == index2);
+
+				const Member& newMember1 = school.members[index1];
+				const Member& newMember2 = school.members[index2];
+
+				cout << "You encounter " << newMember1.name << " and " << newMember2.name << " having a lively discussion." << endl;
+
+				// add scenarios
+				int scenario = rand() % 3;
+				switch (scenario) {
+				case 0:
+					cout << newMember1.name << " is practicing a new spell and invites you to join in." << endl;
+					cout << newMember2.name << " seems to be skeptical of the spell's effectiveness." << endl;
+					// handle friendship/rivalry
+					// increase friendship with newMember1
+					// decrease affection or create rivalry with newMember2
+					break;
+				case 1:
+					cout << newMember1.name << " is organizing a magical duel and asks if you'd like to participate." << endl;
+					cout << newMember2.name << " is there to watch and cheer you on." << endl;
+					// handle friendship/rivalry
+					// increase friendship with newMember1
+					// increase friendship with newMember2 for support
+					break;
+				case 2:
+					cout << newMember1.name << " and " << newMember2.name << " are debating a magical theory." << endl;
+					cout << "They invite you to share your opinion on the matter." << endl;
+					// handle friendship/rivalry
+					// increase friendship with both members for participation
+					break;
+				}
+				break;
+			case 5:
+				cout << "You decide to return to your dorm room." << endl;
+				continueExploring = false; // exit the loop
 				break;
 			default:
 				cout << "Invalid choice. You decide to continue exploring the dorm halls." << endl;
 				break;
+			}
 		}
 	}
 	void checkRankings() const {
