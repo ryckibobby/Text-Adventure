@@ -69,12 +69,13 @@ class Relationship {
 		}
 };
 
+
 class Member {
 	public:
 		string name;
 		int affectionPoints;
 
-		Member(const string& memberName) : name(memberName), affectionPoints(0) {}
+		Member(const string& memberName, int memberPoints) : name(memberName), affectionPoints(0) {}
 };
 
 class School {
@@ -89,7 +90,8 @@ class School {
 		School(const string& schoolName) : name(schoolName) {}
 
 		void addMember(const string& memberName, int points) {
-			members.emplace_back(memberName);
+			members.push_back(Member(memberName, points)); 
+			//members.emplace_back(memberName);
 			memberPoints[memberName] = points;
 		}
 		void updatePoints(const string& memberName, int points) {
@@ -616,6 +618,19 @@ class Dorm {
 			}
 		} while (choice != 6 && choice != 4);
 	}
+	void initializeRelationships() {
+		for (const auto& member : school.members) {
+			relationships[member.name] = Relationship(member.name);
+		}
+	}
+	void increaseAffection(const string& memberName, int points) {
+		if (relationships.find(memberName) != relationships.end()) {
+			relationships[memberName].increaseAffection(points);
+		}
+		else {
+			cout << "Relationship with " << memberName << " not found." << endl;
+		}
+	}
 	void exploreDormHalls() {
 		// check if there are enough members to explore
 		if (school.members.size() < 2) {
@@ -813,14 +828,6 @@ class Dorm {
 	void spellInventory() {
 		spellList.displaySpells();
 	}
-
- private:
-	 void increaseAffection(const string& memberName, int points) {
-		if (relationships.find(memberName) == relationships.end()) {
-			 relationships[memberName] = Relationship(memberName);
-		 }
-		 relationships[memberName].increaseAffection(points);
-	 }
 };
 
 int main() {
@@ -1078,7 +1085,6 @@ int main() {
 
 		selectedFaction.explore();
 		
-		// LearnMagic learnMagic(player, spellList, credits, *selectedSchool, selectedFaction);
 
 		Dorm dorm(player, *selectedSchool, faction);
 		dorm.enter();
