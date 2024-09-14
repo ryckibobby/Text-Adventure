@@ -118,45 +118,6 @@ class School {
 		}
 };
 
-class Title {
-private:
-	string name;
-	string description;
-	vector<string> bonuses;  //a list of bonuses or effects associated with the title
-
-public:
-	Title(string name, string description, vector<string> bonuses = {})
-		: name(name), description(description), bonuses(bonuses) {}
-
-	//getters
-	string getName() const {
-		return name;
-	}
-	string getDescription() const {
-		return description;
-	}
-	vector<string> getBonuses() const {
-		return bonuses;
-	}
-
-	// method to display title information
-	void displayTitleInfo() const {
-		cout << "Title: " << name << endl;
-		cout << "Description: " << description << endl;
-		cout << "Bonuses: " << endl;
-		for (const auto& bonus : bonuses) {
-			cout << " - " << bonus << endl;
-		}
-	}
-};
-
-class Skill {
-	public:
-		string name;
-		string description;
-
-		Skill(const string& name, const string& description) : name(name), description(description) {}
-};
 class Item {
 	public:
 		int id;
@@ -330,7 +291,7 @@ class Credits {
 
 class Player {
 	private:
-		vector<Title> titles; //titles earned by player
+		Credits credits; // manage credits
 	public:
 		string name; 
 		School* school;
@@ -402,24 +363,6 @@ class Player {
 			}
 		}
 
-	void addTitle(const Title& newTitle) {
-		titles.push_back(newTitle);
-		cout << "You have earned the title: " << newTitle.getName() << endl;
-
-	}
-
-	void displayTitle() const {
-		if (titles.empty()) {
-			cout << "No titles earned" << endl;
-		}
-		else {
-			cout << "Titles earned: " << endl;
-			for (const auto& title : titles) {
-				title.displayTitleInfo();
-			}
-		}
-	}
-
 	void addItem(const string& item) {
 		inventory.push_back(item);
 		cout << item << " added to your inventory." << endl;
@@ -435,17 +378,27 @@ class Player {
 			cout << "- " << item << endl;
 		}
 	}
+	void earnCredits(int amount) {
+		credits.addCredits(amount);
+	}
+	void spendCredits(int amount) {
+		credits.deductCredits(amount);
+	}
 	
 	string getName() const { return name; }
+
+	Credits& getCredits() { return credits; } // access credits
+	const Credits& getCredits() const { return credits; }
 };
 
 
 
 class LearnMagic {
+private:
+	map<string, pair<int, vector<string>>> availableClasses; 
 public:
 	Player& player;
 	Credits& credits;
-	map<string, pair<int, vector<string>>> availableClasses;
 	SpellList& spellList;
 	School selectedSchool;
 	Faction selectedFaction;
@@ -517,45 +470,55 @@ public:
 
 	}
 
-	void attendClass(const string& className) {
+	bool attendClass(const string& className) {
 		if (player.hasLearnedClass(className)) {
 			cout << "You have already attended the " << className << " class." << endl;
-			return;
+			return false;
 		}
 		auto it = availableClasses.find(className);
 		if (it == availableClasses.end()) {
 			cout << "Class not available." << endl;
-			return;
+			return false;
 		}
 
 		int classCost = it->second.first;
 		if (!credits.canTakeClass(classCost)) {
 			cout << "You do not have enough credits to attend this class." << endl;
-			return;
+			return false;
 		}
-
 
 		cout << "You have chosen to attend the " << className << " class." << endl;
 		for (const auto& task : it->second.second) {
 			cout << "Task: " << task << endl;
-			//task here
+			// simulate task completion
 			cout << "Task completed!" << endl;
-
-
 		}
 
 		cout << "Congratulations! You have completed the " << className << " class." << endl;
 		player.learnSpell(className);
 		player.addLearnedClass(className);
 		credits.deductCredits(classCost);
-		credits.addCredits(classCost/2);
+		credits.addCredits(classCost / 2);
+
+		return true;
 	}
 
-	void listAvailableClasses() const {
-		cout << "Available classes:" << endl;
-		cout << "Number of available classes: " << availableClasses.size() << endl; //map isnt populated
+	void listAffordableClasses() const {
+		cout << "Affordable classes:" << endl;
+		bool hasAffordableClasses = false;
+
 		for (const auto& classPair : availableClasses) {
-			cout << "- " << classPair.first << "(Cost: " << classPair.second.first << " credits)" << endl;
+			const string& className = classPair.first;
+			int classCost = classPair.second.first;
+
+			if (player.getCredits().canTakeClass(classCost)) {
+				cout << "- " << className << " (Cost: " << classCost << " credits)" << endl;
+				hasAffordableClasses = true;
+			}
+		}
+
+		if (!hasAffordableClasses) {
+			cout << "You cannot afford any classes at the moment." << endl;
 		}
 	}
 };
@@ -563,20 +526,19 @@ public:
 class Dorm {
 	private:
 		Player& player;
-		string faction;
+		Faction faction;
 		map<string, Relationship> relationships;
+		School& associatedSchool;
 		SpellList spellList;
 		LearnMagic learnMagic;
-	public:
-		School& school;
-		vector<Member*> friends;
 		Credits creditsObj;
+		vector<Member*> friends;
 
-		Dorm(Player& p, School& associatedSchool, const string& factionName) :
-			player(p), school(associatedSchool),
-			faction(factionName),
-			creditsObj(),
-			learnMagic(p, spellList, creditsObj, associatedSchool, Faction(associatedSchool.getName(), factionName)) {}
+	public:
+		Dorm(Player& p, School school, Faction f) :
+			player(p), learnMagic(p, spellList, creditsObj, school, f), associatedSchool(school), faction(f) {
+			learnMagic.initializeClasses(school.getName(), f.getName());
+		}
 
 		
 	void enter() {
@@ -619,7 +581,7 @@ class Dorm {
 		} while (choice != 6 && choice != 4);
 	}
 	void initializeRelationships() {
-		for (const auto& member : school.members) {
+		for (const auto& member : associatedSchool.members) {
 			relationships[member.name] = Relationship(member.name);
 		}
 	}
@@ -633,7 +595,7 @@ class Dorm {
 	}
 	void exploreDormHalls() {
 		// check if there are enough members to explore
-		if (school.members.size() < 2) {
+		if (associatedSchool.members.size() < 2) {
 			cout << "Not enough members to explore the dorm halls." << endl;
 			return;
 		}
@@ -643,14 +605,14 @@ class Dorm {
 		bool continueExploring = true;
 		while (continueExploring) {
 			// randomly select two members from the same school
-			int index1 = rand() % school.members.size();
+			int index1 = rand() % associatedSchool.members.size();
 			int index2;
 			do {
-				index2 = rand() % school.members.size();
+				index2 = rand() % associatedSchool.members.size();
 			} while (index1 == index2);
 
-			const Member& member1 = school.members[index1];
-			const Member& member2 = school.members[index2];
+			const Member& member1 = associatedSchool.members[index1];
+			const Member& member2 = associatedSchool.members[index2];
 
 			cout << "As you wander through the dorm halls, you come across " << member1.name << " and " << member2.name << " having a conversation: " << endl;
 
@@ -669,14 +631,14 @@ class Dorm {
 			cin >> choice;
 
 			// declare and initialize outside the switch statement
-			int newIndex1 = rand() % school.members.size();
+			int newIndex1 = rand() % associatedSchool.members.size();
 			int newIndex2;
 			do {
-				newIndex2 = rand() % school.members.size();
+				newIndex2 = rand() % associatedSchool.members.size();
 			} while (newIndex1 == newIndex2);
 
-			const Member& newMember1 = school.members[newIndex1];
-			const Member& newMember2 = school.members[newIndex2];
+			const Member& newMember1 = associatedSchool.members[newIndex1];
+			const Member& newMember2 = associatedSchool.members[newIndex2];
 
 			int scenario = rand() % 3;
 
@@ -803,7 +765,7 @@ class Dorm {
 	}
 
 	void checkRankings() const {
-		school.showRankings();
+		associatedSchool.showRankings();
 	}
 
 	void quitSchool() const {
@@ -811,19 +773,27 @@ class Dorm {
 		exit(0);
 	}
 	void learn() {
-		Credits creditsObj;
-		learnMagic.listAvailableClasses();
-
-		string chosenClass; 
+		learnMagic.listAffordableClasses(); // list affordable classes before attending
+		string chosenClass;
 		cout << "Enter the class you want to attend: ";
 		cin >> chosenClass;
 
-		learnMagic.attendClass(chosenClass);
+		//attempt to attend the chosen class
+		bool success = learnMagic.attendClass(chosenClass);
+
+		// if attending the class was unsuccessful due to lack of credits, return to the dorm
+		if (!success) {
+			cout << "Returning to the dorm." << endl;
+			enter();
+		}
 	}
 	void initializeSpells() {
 		spellList.addSpell(Spell("Fireball", "A powerful fire attack", 10));
 		spellList.addSpell(Spell("Ice Shard", "A sharp ice projectile", 8));
 		spellList.addSpell(Spell("Lightning Bolt", "A fast lightning strike", 12));
+		spellList.addSpell(Spell("Fireball", "A basic fireball spell", 5));
+		spellList.addSpell(Spell("Ice Lance", "A lance of ice to pierce enemies", 3)); 
+		spellList.addSpell(Spell("Healing Light", "A spell to heal wounds", 4));
 	}
 	void spellInventory() {
 		spellList.displaySpells();
@@ -953,9 +923,8 @@ int main() {
 		Player player(playerName);
 		SpellList spellList;
 		Credits credits(); 
-
 		
-
+		player.earnCredits(10); 
 
 		cout << "Hello, " << playerName << "! Let's begin your adventure." << endl;
 
@@ -1086,8 +1055,9 @@ int main() {
 		selectedFaction.explore();
 		
 
-		Dorm dorm(player, *selectedSchool, faction);
+		Dorm dorm(player, *selectedSchool, selectedFaction);
 		dorm.enter();
+		
 
 		cout << "Do you want to play again? (y/n): ";
 		cin >> playAgain;
