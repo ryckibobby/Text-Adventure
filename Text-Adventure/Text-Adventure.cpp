@@ -76,17 +76,18 @@ class Member {
 		int affectionPoints;
 
 		Member(const string& memberName, int memberPoints) : name(memberName), affectionPoints(0) {}
+
+		void adjustAffection(int points) {
+			affectionPoints += points;
+		}
 };
 
 class School {
-	
 	public:
 		string name;
 		vector<Member> members;
 		map<string, int> memberPoints;
 
-		
-		// School(string schoolName) : name(schoolName) {} 
 		School(const string& schoolName) : name(schoolName) {}
 
 		void addMember(const string& memberName, int points) {
@@ -112,6 +113,54 @@ class School {
 				cout << i + 1 << ". " << rankings[i].first << " - " << rankings[i].second << " credits" << endl;
 			}
 		}
+		//random encounter with a school member
+		void randomChanceEncounter() {
+			if (members.empty()) {
+				cout << "No members in this school to encounter." << endl;
+				return;
+			}
+
+			srand(time(0));
+			int randomIndex = rand() % members.size();
+			Member& encounteredMember = members[randomIndex];
+
+			cout << "You encountered " << encounteredMember.name << " from the " << name << " school!" << endl;
+
+			if (name == "Fire") {
+				cout << encounteredMember.name << " challenges you to a fiery duel. Do you accept? (y/n): ";
+			}
+			else if (name == "Ice") {
+				cout << encounteredMember.name << " offers wisdom on controlling ice magic. Do you listen? (y/n): ";
+			}
+			else if (name == "Life") {
+				cout << encounteredMember.name << " invites you to help grow a magical plant. Do you help? (y/n): ";
+			}
+			else if (name == "Death") {
+				cout << encounteredMember.name << " asks you if you're ready to face death. Do you accept their test? (y/n): ";
+			}
+			else if (name == "Storm") {
+				cout << encounteredMember.name << " tests your ability to control the wind. Do you try? (y/n): ";
+			}
+			else if (name == "Illusion") {
+				cout << encounteredMember.name << " challenges your sense of reality. Do you believe their illusion? (y/n): ";
+			}
+
+			char choice;
+			cin >> choice;
+
+			//affect affection points based on player's choice
+			if (choice == 'y' || choice == 'Y') {
+				cout << "You gained " << encounteredMember.name << "'s favor!" << endl;
+				encounteredMember.adjustAffection(10); //increase affection
+			}
+			else {
+				cout << "You lost " << encounteredMember.name << "'s favor." << endl;
+				encounteredMember.adjustAffection(-10); //decrease affection
+			}
+
+			//show current affection points
+			cout << encounteredMember.name << " now has " << encounteredMember.affectionPoints << " affection points." << endl;
+		}
 
 		string getName() const {
 			return name;
@@ -125,8 +174,6 @@ class Item {
 		string description;
 
 		Item(int itemId, string itemName, string itemDescription) : id(itemId), name(itemName), description(itemDescription) {}
-
-
 };
 
 class Faction {
@@ -528,15 +575,14 @@ class Dorm {
 		Player& player;
 		Faction faction;
 		map<string, Relationship> relationships;
-		School& associatedSchool;
+		School& school;
 		SpellList spellList;
 		LearnMagic learnMagic;
 		Credits creditsObj;
 		vector<Member*> friends;
-
 	public:
 		Dorm(Player& p, School school, Faction f) :
-			player(p), learnMagic(p, spellList, creditsObj, school, f), associatedSchool(school), faction(f) {
+			player(p), learnMagic(p, spellList, creditsObj, school, f), school(school), faction(f) {
 			learnMagic.initializeClasses(school.getName(), f.getName());
 		}
 
@@ -560,7 +606,10 @@ class Dorm {
 				player.checkInventory();
 				break;
 			case 2:
-				exploreDormHalls();
+				int timeUnits;
+				cout << "How many time units do you want to spend exploring? ";
+				cin >> timeUnits;
+				exploreDormHalls(timeUnits);
 				break;
 			case 3:
 				checkRankings();
@@ -580,11 +629,6 @@ class Dorm {
 			}
 		} while (choice != 6 && choice != 4);
 	}
-	void initializeRelationships() {
-		for (const auto& member : associatedSchool.members) {
-			relationships[member.name] = Relationship(member.name);
-		}
-	}
 	void increaseAffection(const string& memberName, int points) {
 		if (relationships.find(memberName) != relationships.end()) {
 			relationships[memberName].increaseAffection(points);
@@ -593,179 +637,21 @@ class Dorm {
 			cout << "Relationship with " << memberName << " not found." << endl;
 		}
 	}
-	void exploreDormHalls() {
-		// check if there are enough members to explore
-		if (associatedSchool.members.size() < 2) {
-			cout << "Not enough members to explore the dorm halls." << endl;
-			return;
-		}
+	void exploreDormHalls(int timeUnits) {
+		int encounters = 0;
+		srand(time(0)); // random seed
 
-		srand(static_cast<unsigned int>(time(nullptr)));
-
-		bool continueExploring = true;
-		while (continueExploring) {
-			// randomly select two members from the same school
-			int index1 = rand() % associatedSchool.members.size();
-			int index2;
-			do {
-				index2 = rand() % associatedSchool.members.size();
-			} while (index1 == index2);
-
-			const Member& member1 = associatedSchool.members[index1];
-			const Member& member2 = associatedSchool.members[index2];
-
-			cout << "As you wander through the dorm halls, you come across " << member1.name << " and " << member2.name << " having a conversation: " << endl;
-
-			cout << member1.name << ": 'I heard there's a new spell that's incredibly powerful. Have you tried it?'" << endl;
-			cout << member2.name << ": 'Not yet. I've been focused on perfecting my potion-making skills. But maybe I should give it a try.'" << endl;
-			cout << member1.name << ": 'You should! It could really boost your abilities.'" << endl;
-
-			cout << "What would you like to do?" << endl;
-			cout << "1. Ask " << member1.name << " about the new spell." << endl;
-			cout << "2. Offer to help " << member2.name << " with potion-making." << endl;
-			cout << "3. Share your magical abilities with " << member1.name << " and " << member2.name << endl;
-			cout << "4. Continue exploring the dorm halls." << endl;
-			cout << "5. Return to your dorm room." << endl;
-
-			int choice;
-			cin >> choice;
-
-			// declare and initialize outside the switch statement
-			int newIndex1 = rand() % associatedSchool.members.size();
-			int newIndex2;
-			do {
-				newIndex2 = rand() % associatedSchool.members.size();
-			} while (newIndex1 == newIndex2);
-
-			const Member& newMember1 = associatedSchool.members[newIndex1];
-			const Member& newMember2 = associatedSchool.members[newIndex2];
-
-			int scenario = rand() % 3;
-
-			switch (choice) {
-			case 1:
-				cout << "You approach " << member1.name << " and ask about the new spell." << endl;
-				cout << member1.name << " explains that it's a spell that can enhance magical abilities but requires special ingredients to cast." << endl;
-				increaseAffection(member1.name, 10);
-				break;
-
-			case 2:
-				cout << "You offer to help " << member2.name << " with potion-making." << endl;
-				cout << member2.name << " gratefully accepts, and you spend some time working together, learning about potion recipes and brewing techniques." << endl;
-				increaseAffection(member2.name, 15);
-				break;
-
-			case 3:
-				cout << "You decide to share your own magical discoveries with " << member1.name << " and " << member2.name << "." << endl;
-				if (creditsObj.getTotalCredits() >= 10) {
-					cout << "You demonstrate a complex spell you recently mastered, combining elements of both fire and lightning to create a dazzling display of power." << endl;
-					cout << member1.name << " and " << member2.name << " watch in awe, clearly impressed by your abilities." << endl;
-					cout << member1.name << ": 'Incredible! I've never seen anything like that. You must teach me this spell!'" << endl;
-					cout << member2.name << ": 'I think this could be the key to perfecting my potion-making as well. Your skills are truly remarkable.'" << endl;
-					  increaseAffection(member1.name, 10);
-					  increaseAffection(member2.name, 10);
-
-				}
-				else {
-					cout << "You attempt to share a basic spell, but it doesn't quite have the impact you hoped for." << endl;
-					cout << member1.name << " and " << member2.name << " exchange glances, their interest waning." << endl;
-					cout << member1.name << ": 'Hmm, that's interesting, but I've seen better.'" << endl;
-					cout << member2.name << ": 'Maybe you should focus on refining your skills before showing off next time.'" << endl;
-				}
-				break;
-
-			case 4:
-				cout << "You decide to continue exploring the dorm halls." << endl;
-				cout << "You encounter " << newMember1.name << " and " << newMember2.name << " having a lively discussion." << endl;
-
-				switch (scenario) {
-				case 0:
-					cout << newMember1.name << " is practicing a new spell and invites you to join in." << endl;
-					cout << newMember2.name << " seems to be skeptical of the spell's effectiveness." << endl;
-					cout << "Do you join in or express your doubts?" << endl;
-					cout << "1. Join " << newMember1.name << " and practice the spell." << endl;
-					cout << "2. Agree with " << newMember2.name << " and express your doubts." << endl;
-					
-					int scenarioChoice;
-					cin >> scenarioChoice;
-
-					if (scenarioChoice == 1) {
-						cout << newMember1.name << " appreciates your willingness to experiment and you successfully practice the spell together." << endl; 
-						// increase friendship with newMember1
-						increaseAffection(newMember1.name, 10);
-
-					}
-					else {
-						cout << newMember2.name << " nods in agreement, appreciating your critical thinking." << endl;
-						// increase friendship with newMember2
-						increaseAffection(newMember2.name, 10);
-
-					}
-					break;
-
-				case 1:
-					cout << newMember1.name << " is organizing a magical duel and asks if you'd like to participate." << endl;
-					cout << newMember2.name << " is there to watch and cheer you on." << endl;
-					cout << "Do you accept the challenge or politely decline?" << endl;
-					cout << "1. Accept the duel challenge." << endl;
-					cout << "2. Politely decline and cheer on the others." << endl;
-
-					cin >> scenarioChoice;
-
-					if (scenarioChoice == 1) {
-						cout << "You accept the challenge and engage in a thrilling duel with " << newMember1.name << "." << endl;
-						cout << "The duel is intense, but you manage to hold your own, earning respect from both members." << endl;
-						// increase friendship with both members
-						increaseAffection(newMember1.name, 10);
-						increaseAffection(newMember2.name, 10);
-
-					}
-					else {
-						cout << "You politely decline, preferring to observe the duel. " << newMember2.name << " appreciates your support from the sidelines." << endl;
-						// increase friendship with newMember2
-						increaseAffection(newMember2.name, 15);
-
-					}
-					break;
-
-				case 2:
-					cout << newMember1.name << " and " << newMember2.name << " are debating a magical theory." << endl;
-					cout << "They invite you to share your opinion on the matter." << endl;
-					cout << "Do you side with " << newMember1.name << " or " << newMember2.name << "?" << endl;
-					cout << "1. Side with " << newMember1.name << " and support their argument." << endl;
-					cout << "2. Side with " << newMember2.name << " and support their counterargument." << endl;
-
-					cin >> scenarioChoice;
-
-					if (scenarioChoice == 1) {
-						cout << newMember1.name << " is pleased with your support and the debate continues with renewed vigor." << endl;
-						// increase friendship with newMember1
-						increaseAffection(newMember1.name, 10);
-
-					}
-					else {
-						cout << newMember2.name << " smiles, happy to have someone who sees things from their perspective." << endl;
-						// increase friendship with newMember2
-						increaseAffection(newMember2.name, 10);
-					}
-					break;
-				}
-				break;
-
-			case 5:
-				cout << "You decide to return to your dorm room." << endl;
-				continueExploring = false; // exit the loop
-				break;
-
-			default:
-				cout << "Invalid choice. You decide to continue exploring the dorm halls." << endl;
-				break;
+		for (int i = 0; i < timeUnits; ++i) {
+			if (rand() % 2 == 0) { // 50% chance of an encounter each time unit
+				school.randomChanceEncounter(); // call the school's encounter function
+				encounters++;
 			}
 		}
+		cout << "You encountered " << encounters << " events during your exploration." << endl;
 	}
 
 	void checkRankings() const {
-		associatedSchool.showRankings();
+		school.showRankings();
 	}
 
 	void quitSchool() const {
@@ -803,44 +689,44 @@ class Dorm {
 int main() {
 	//school and members
 	School fireSchool("Fire");
-	fireSchool.addMember("Ignatius", 110);
-	fireSchool.addMember("Ashen", 95);
-	fireSchool.addMember("Scorcha", 85);
-	fireSchool.addMember("Ember", 70);
-	fireSchool.addMember("Scorch", 62);
-	fireSchool.addMember("Blaze", 59);
-	fireSchool.addMember("Pyro", 54);
-	fireSchool.addMember("Pyra", 53);
-	fireSchool.addMember("Emberis", 45);
-	fireSchool.addMember("Inferna", 40);
+	fireSchool.addMember("Ignatius", 110); 
+	fireSchool.addMember("Ashen", 95); 
+	fireSchool.addMember("Scorcha", 85); 
+	fireSchool.addMember("Ember", 70); 
+	fireSchool.addMember("Scorch", 62); 
+	fireSchool.addMember("Blaze", 59); 
+	fireSchool.addMember("Pyro", 54); 
+	fireSchool.addMember("Pyra", 53);  
+	fireSchool.addMember("Emberis", 45); 
+	fireSchool.addMember("Inferna", 40); 
 	fireSchool.addMember("Blazewind", 37);
-	fireSchool.addMember("Ignitia", 28);
-	fireSchool.addMember("Searis", 22);
-	fireSchool.addMember("Ignis", 20);
-	fireSchool.addMember("Volcanor", 16);
-	fireSchool.addMember("Volcanis", 13);
+	fireSchool.addMember("Ignitia", 28); 
+	fireSchool.addMember("Searis", 22); 
+	fireSchool.addMember("Ignis", 20); 
+	fireSchool.addMember("Volcanor", 16); 
+	fireSchool.addMember("Volcanis", 13); 
 
-	School iceSchool("Ice");
-	iceSchool.addMember("Frostine", 115);
-	iceSchool.addMember("Glacia", 105);
-	iceSchool.addMember("Tundra", 95);
-	iceSchool.addMember("Icetide", 80);
-	iceSchool.addMember("Cyros", 63);
-	iceSchool.addMember("Frost", 52); 
-	iceSchool.addMember("Snowlyn", 48);
-	iceSchool.addMember("Crystal", 46); 
-	iceSchool.addMember("Snow", 40); 
-	iceSchool.addMember("Frost", 30);
-	iceSchool.addMember("Glacier", 25);
-	iceSchool.addMember("Frostella", 22);
-	iceSchool.addMember("Snowbreeze", 19);
-	iceSchool.addMember("Glaciana", 15);
-	iceSchool.addMember("Icyra", 14);
-	iceSchool.addMember("Cryosus", 10);
+	School iceSchool("Ice"); 
+	iceSchool.addMember("Frostine", 115); 
+	iceSchool.addMember("Glacia", 105); 
+	iceSchool.addMember("Tundra", 95); 
+	iceSchool.addMember("Icetide", 80); 
+	iceSchool.addMember("Cyros", 63); 
+	iceSchool.addMember("Frost", 52);  
+	iceSchool.addMember("Snowlyn", 48); 
+	iceSchool.addMember("Crystal", 46);  
+	iceSchool.addMember("Snow", 40);  
+	iceSchool.addMember("Frost", 30); 
+	iceSchool.addMember("Glacier", 25); 
+	iceSchool.addMember("Frostella", 22); 
+	iceSchool.addMember("Snowbreeze", 19); 
+	iceSchool.addMember("Glaciana", 15); 
+	iceSchool.addMember("Icyra", 14); 
+	iceSchool.addMember("Cryosus", 10); 
 	
 
-	School lifeSchool("Life");
-	lifeSchool.addMember("Thorne", 155);
+	School lifeSchool("Life"); 
+	lifeSchool.addMember("Thorne", 155); 
 	lifeSchool.addMember("Ivyra", 101);
 	lifeSchool.addMember("Briar", 97);
 	lifeSchool.addMember("Thalia", 84);
