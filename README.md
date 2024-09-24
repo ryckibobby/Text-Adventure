@@ -1,5 +1,4 @@
 # Text-Adventure
-
 This is a Text-Based Adventure Game where you take on the role of a young wizard navigating through various challenges, magical encounters, and social interactions at a magical school. Players will explore dormitory halls, interact with other wizards, learn new spells, and make choices that affect relationships and reputation.
 
 # Features
